@@ -1,0 +1,13 @@
+flutter_native_splash:
+  color: "#F2F2F2"
+  color_dark: "#0D0C0C"
+  image: assets/images/logos/spotify_logo.png
+  image_dark: assets/images/logos/spotify_logo.png
+
+  android_12:
+    color: "#F2F2F2"
+    color_dark: "#0D0C0C"
+    image: assets/images/logos/spotify_logo.png
+    image_dark: assets/images/logos/spotify_logo.png
+
+  web: false
