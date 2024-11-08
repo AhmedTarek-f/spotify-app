@@ -12,11 +12,11 @@ abstract class SpotifyImages {
   static const String sunIcon= "assets/images/icons/Sun.svg";
   static const String spotifyLogoPNG= "assets/images/logos/spotify_logo.png";
   static const String spotifyLogoSVG= "assets/images/logos/spotify_logo.svg";
-  static const String onBoarding1= "assets/images/on_boarding/on_boarding_1.svg";
-  static const String onBoarding2= "assets/images/on_boarding/on_boarding_2.svg";
-  static const String onBoarding3= "assets/images/on_boarding/on_boarding_3.svg";
-  static const String onBoarding3BottomSlashes= "assets/images/on_boarding/on_boarding_3_bottom_slashes.svg";
-  static const String onBoarding3TopSlashes= "assets/images/on_boarding/on_boarding_3_top_slashes.svg";
+  static const String onBoarding1= "assets/images/on_boarding/on_boarding_1.png";
+  static const String onBoarding2= "assets/images/on_boarding/on_boarding_2.png";
+  static const String onBoarding3= "assets/images/on_boarding/on_boarding_3.png";
+  static const String onBoarding3BottomSlashes= "assets/images/on_boarding/on_boarding_3_bottom_slashes.png";
+  static const String onBoarding3TopSlashes= "assets/images/on_boarding/on_boarding_3_top_slashes.png";
   static const String album1= "assets/images/songs_images/album_1.svg";
   static const String album_2= "assets/images/songs_images/album_2.svg";
   static const String articlePageUpperPart= "assets/images/songs_images/artics_page_upper_part.svg";
