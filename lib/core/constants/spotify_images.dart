@@ -10,6 +10,8 @@ abstract class SpotifyImages {
   static const String playIcon= "assets/images/icons/Play.svg";
   static const String profileIcon= "assets/images/icons/Profile.svg";
   static const String sunIcon= "assets/images/icons/Sun.svg";
+  static const String threeDotsIcon= "assets/images/icons/three_dots_icon.svg";
+  static const String visibilityOffIcon= "assets/images/icons/visibility_off.svg";
   static const String spotifyLogoPNG= "assets/images/logos/spotify_logo.png";
   static const String spotifyLogoSVG= "assets/images/logos/spotify_logo.svg";
   static const String onBoarding1= "assets/images/on_boarding/on_boarding_1.png";

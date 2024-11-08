@@ -13,7 +13,7 @@ class SpotifyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: SpotifyAppTheme.lightTheme,
       darkTheme: SpotifyAppTheme.darkTheme,
-      home: GetStartedView(),
+      home: const GetStartedView(),
     );
   }
 }

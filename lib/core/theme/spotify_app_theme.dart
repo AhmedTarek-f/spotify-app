@@ -9,7 +9,7 @@ abstract class SpotifyAppTheme {
     fontFamily: "Satoshi",
     brightness: Brightness.light,
     primaryColor: SpotifyColors.primaryColor,
-    scaffoldBackgroundColor: Color(0xffF2F2F2),
+    scaffoldBackgroundColor: const Color(0xffF2F2F2),
     appBarTheme: SpotifyAppBar.lightAppBarTheme,
     inputDecorationTheme: SpotifyTextFormFieldTheme.lightInputDecorationTheme,
   );
@@ -19,7 +19,7 @@ abstract class SpotifyAppTheme {
       fontFamily: "Satoshi",
       brightness: Brightness.dark,
       primaryColor: SpotifyColors.primaryColor,
-      scaffoldBackgroundColor: Color(0xff1C1B1B),
+      scaffoldBackgroundColor: const Color(0xff1C1B1B),
       appBarTheme: SpotifyAppBar.darkAppBarTheme,
       inputDecorationTheme: SpotifyTextFormFieldTheme.darkInputDecorationTheme
   );
