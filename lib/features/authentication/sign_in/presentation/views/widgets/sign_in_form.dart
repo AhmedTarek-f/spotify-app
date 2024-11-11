@@ -5,7 +5,6 @@ import 'package:spotify/core/common_widgets/spotify_custom_button.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/widgets/sign_in_email_field.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/widgets/sign_in_password_field.dart';
-import 'package:spotify/features/home/presentation/views/home_view.dart';
 
 class SignInForm extends StatelessWidget {
   const SignInForm({super.key});

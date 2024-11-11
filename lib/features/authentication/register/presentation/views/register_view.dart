@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:spotify/core/common_widgets/sportify_custom_app_bar.dart';
 import 'package:spotify/core/constants/spotify_images.dart';

@@ -3,14 +3,14 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 
 class NavigationUpperPart extends StatelessWidget {
   const NavigationUpperPart({
-    super.key,
+    super.key, this.width = 23, this.height=4,
   });
-
+  final double? width,height;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 23,
-      height: 4,
+      width: width,
+      height: height,
       decoration: const BoxDecoration(
         color: SpotifyColors.primaryColor,
         borderRadius: BorderRadius.only(

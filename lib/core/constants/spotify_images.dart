@@ -9,9 +9,11 @@ abstract class SpotifyImages {
   static const String moonIcon= "assets/images/icons/Moon.svg";
   static const String playIcon= "assets/images/icons/Play.svg";
   static const String profileIcon= "assets/images/icons/Profile.svg";
+  static const String threeDotsHorizontallyIcon= "assets/images/icons/three_dots_horizontally.svg";
   static const String sunIcon= "assets/images/icons/Sun.svg";
   static const String threeDotsIcon= "assets/images/icons/three_dots_icon.svg";
   static const String visibilityOffIcon= "assets/images/icons/visibility_off.svg";
+  static const String searchIcon= "assets/images/icons/search_icon.svg";
   static const String spotifyLogoPNG= "assets/images/logos/spotify_logo.png";
   static const String spotifyLogoSVG= "assets/images/logos/spotify_logo.svg";
   static const String onBoarding1= "assets/images/on_boarding/on_boarding_1.png";
@@ -19,12 +21,15 @@ abstract class SpotifyImages {
   static const String onBoarding3= "assets/images/on_boarding/on_boarding_3.png";
   static const String onBoarding3BottomSlashes= "assets/images/on_boarding/on_boarding_3_bottom_slashes.png";
   static const String onBoarding3TopSlashes= "assets/images/on_boarding/on_boarding_3_top_slashes.png";
-  static const String album1= "assets/images/songs_images/album_1.svg";
-  static const String album_2= "assets/images/songs_images/album_2.svg";
+  static const String album1= "assets/images/songs_images/album_1.png";
+  static const String album2= "assets/images/songs_images/album_2.png";
   static const String articlePageUpperPart= "assets/images/songs_images/artics_page_upper_part.svg";
-  static const String homeAlbum1= "assets/images/songs_images/home_album_1.svg";
+  static const String homeAlbum1= "assets/images/songs_images/home_album_1.png";
+  static const String homeAlbumSlashes= "assets/images/songs_images/home_album_slashes.png";
   static const String lyricsBackgroundImage= "assets/images/songs_images/lyrics_bacgr.svg";
-  static const String song1= "assets/images/songs_images/song1.svg";
-  static const String song2= "assets/images/songs_images/song2.svg";
-  static const String song3= "assets/images/songs_images/song3.svg";
+  static const String song1= "assets/images/songs_images/song1.png";
+  static const String song2= "assets/images/songs_images/song2.png";
+  static const String song3= "assets/images/songs_images/song3.png";
+  static const String song4= "assets/images/songs_images/song4.png";
+  static const String profilePic= "assets/images/my_grad_pic.jpg";
 }

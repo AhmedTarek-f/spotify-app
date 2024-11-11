@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:spotify/core/common_widgets/spotify_custom_button.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
-import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/authentication/register/presentation/views/widgets/register_email_field.dart';
 import 'package:spotify/features/authentication/register/presentation/views/widgets/register_full_name_field.dart';
 import 'package:spotify/features/authentication/register/presentation/views/widgets/register_password_field.dart';

@@ -30,7 +30,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-
+assets/images/my_grad_pic.jpg
+lib/features/discovery
 # Symbolication related
 app.*.symbols
 

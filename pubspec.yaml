@@ -82,6 +82,7 @@ flutter:
     - assets/images/logos/
     - assets/images/on_boarding/
     - assets/images/songs_images/
+    - assets/images/my_grad_pic.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
