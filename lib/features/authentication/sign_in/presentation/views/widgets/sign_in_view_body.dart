@@ -7,12 +7,14 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/authentication/register/presentation/views/register_view.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/widgets/sign_in_form.dart';
+import 'package:spotify/features/authentication/sign_in/presentation/views_model/sign_in_controller.dart';
 
 class SignInViewBody extends StatelessWidget {
   const SignInViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final SignInController controller = Get.put(SignInController());
     return  SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +36,9 @@ class SignInViewBody extends StatelessWidget {
           ),
           const SizedBox(height: 44,),
           SocialButtons(
-            googleOnPressed: (){},
+            googleOnPressed: ()async {
+              await controller.googleSignIn();
+            },
             appleOnPressed: (){},
           ),
           const SizedBox(height: 57,),
