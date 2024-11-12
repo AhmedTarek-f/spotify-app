@@ -6,6 +6,7 @@ import 'package:spotify/core/common_widgets/two_text_one_clickable.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/authentication/register/presentation/views/widgets/register_form.dart';
+import 'package:spotify/features/authentication/register/presentation/views_model/register_controller.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/sign_in_view.dart';
 
 class RegisterViewBody extends StatelessWidget {
@@ -13,6 +14,7 @@ class RegisterViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final registerController = Get.put(RegisterController());
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +36,9 @@ class RegisterViewBody extends StatelessWidget {
           ),
           const SizedBox(height: 44,),
           SocialButtons(
-            googleOnPressed: (){},
+            googleOnPressed: ()async{
+              await registerController.signUpWithGoogle();
+            },
             appleOnPressed: (){},
           ),
           const SizedBox(height: 44,),
