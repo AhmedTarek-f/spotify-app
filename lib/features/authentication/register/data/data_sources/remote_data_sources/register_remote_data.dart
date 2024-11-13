@@ -6,7 +6,6 @@ import 'package:spotify/core/utlis/exceptions/t_firebase_auth_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
-import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 
 class RegisterRemoteData extends GetxController{
@@ -15,7 +14,7 @@ class RegisterRemoteData extends GetxController{
 
   Future<void> registerUserData(UserModel userData)async{
     try{
-      await _db.collection("User").doc(userData.id).set(userData.toJson());
+      await _db.collection("Users").doc(userData.id).set(userData.toJson());
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -44,6 +43,7 @@ class RegisterRemoteData extends GetxController{
             id: userCredential.user!.uid,
             userName: userName,
             email: userCredential.user!.email ?? "",
+            profileImg: userCredential.user!.photoURL,
           );
 
           await registerUserData(user);
@@ -82,7 +82,7 @@ class RegisterRemoteData extends GetxController{
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again".tr;
+      throw "Something went wrong, Please try again";
     }
   }
 }

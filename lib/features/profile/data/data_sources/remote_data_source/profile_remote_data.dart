@@ -35,7 +35,7 @@ class ProfileRemoteData extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again".tr;
+      throw "Something went wrong, Please try again";
     }
   }
 
@@ -55,7 +55,7 @@ class ProfileRemoteData extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again".tr;
+      throw "Something went wrong, Please try again";
     }
   }
 

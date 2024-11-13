@@ -46,8 +46,8 @@ class ForgetPasswordController extends GetxController
     {
       TFullScreenLoader.stopLoading();
       Loaders.errorSnackBar(
-          title: "Oh snap!".tr,
-          message: e.toString().tr,
+          title: "Oh snap!",
+          message: e.toString(),
       );
     }
 

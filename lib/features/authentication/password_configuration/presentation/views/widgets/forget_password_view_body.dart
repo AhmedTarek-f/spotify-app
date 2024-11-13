@@ -20,9 +20,9 @@ class ForgetPasswordViewBody extends StatelessWidget {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Forget Password".tr, style: Theme.of(context).textTheme.headlineMedium,),
+            Text("Forget Password", style: Theme.of(context).textTheme.headlineMedium,),
             const SizedBox(height: 16,),
-            Text("Don't worry sometimes people can forget too, enter your email and we will send you a password reset link.".tr,style: Theme.of(context).textTheme.labelMedium,),
+            Text("Don't worry sometimes people can forget too, enter your email and we will send you a password reset link.",style: Theme.of(context).textTheme.labelMedium,),
             const SizedBox(height: 64,),
 
             GetBuilder<ForgetPasswordController>(
@@ -34,17 +34,17 @@ class ForgetPasswordViewBody extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration:  InputDecoration(
-                          label: Text("E-Mail".tr,style: Theme.of(context).textTheme.bodyMedium,),
+                          label: Text("E-Mail",style: Theme.of(context).textTheme.bodyMedium,),
                           prefixIcon: const Icon(Iconsax.direct_right_copy)
                       ),
                       validator: (value) {
                         final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                         if(value == null || value.isEmpty || value.trim() == ""){
-                          return "Email is required.".tr;
+                          return "Email is required.";
                         }
                         else if(!emailRegExp.hasMatch(value))
                         {
-                          return "Invalid email address.".tr;
+                          return "Invalid email address.";
                         }
                         else
                         {

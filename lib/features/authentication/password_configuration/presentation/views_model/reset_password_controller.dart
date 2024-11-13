@@ -11,20 +11,20 @@ class ResetPasswordController extends GetxController
 
   Future<void> resendPasswordResetEmail({required String email}) async{
     try{
-        TFullScreenLoader.openLoadingDialog("Processing your request...".tr, SpotifyImages.docerAnimation);
+        TFullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation);
         await AdditionalAuthServices.sendPasswordResetEmail(email: email);
         TFullScreenLoader.stopLoading();
         Loaders.successSnackBar(
-          title: "Email Sent".tr,
-          message: "Email Link Sent to Reset your Password".tr,
+          title: "Email Sent",
+          message: "Email Link Sent to Reset your Password",
         );
     }
     catch(e)
     {
       TFullScreenLoader.stopLoading();
       Loaders.errorSnackBar(
-        title: "Oh Snap!".tr,
-        message: e.toString().tr,
+        title: "Oh Snap!",
+        message: e.toString(),
       );
     }
 

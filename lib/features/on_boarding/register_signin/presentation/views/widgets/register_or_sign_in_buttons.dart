@@ -4,6 +4,7 @@ import 'package:spotify/core/common_widgets/spotify_custom_button.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/authentication/register/presentation/views/register_view.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/sign_in_view.dart';
+import 'package:spotify/features/on_boarding/register_signin/presentation/views_model/register_sign_in_controller.dart';
 
 class RegisterOrSignInButtons extends StatelessWidget {
   const RegisterOrSignInButtons({super.key,});
@@ -11,12 +12,14 @@ class RegisterOrSignInButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RegisterSignInController());
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Expanded(
           child: SpotifyCustomButton(
-            onPressed: (){
+            onPressed: ()async{
+              await controller.changeRedirectScreen();
               Get.offAll(
                 () => const RegisterView(),
                 transition: Transition.leftToRightWithFade,
@@ -33,7 +36,8 @@ class RegisterOrSignInButtons extends StatelessWidget {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height*0.08649,
             child: TextButton(
-              onPressed: (){
+              onPressed: ()async{
+                await controller.changeRedirectScreen();
                 Get.offAll(
                       () => const SignInView(),
                   transition: Transition.leftToRightWithFade,

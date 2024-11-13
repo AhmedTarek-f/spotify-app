@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 
 /// Custom exception class to handle various format-related errors.
 class TFormatException implements Exception {
@@ -20,20 +19,20 @@ class TFormatException implements Exception {
   factory TFormatException.fromCode(String code) {
     switch (code) {
       case 'invalid-email-format':
-        return  TFormatException('The email address format is invalid. Please enter a valid email.'.tr);
+        return  const TFormatException('The email address format is invalid. Please enter a valid email.');
       case 'invalid-phone-number-format':
-        return  TFormatException('The provided phone number format is invalid. Please enter a valid number.'.tr);
+        return  const TFormatException('The provided phone number format is invalid. Please enter a valid number.');
       case 'invalid-date-format':
-        return  TFormatException('The date format is invalid. Please enter a valid date.'.tr);
+        return  const TFormatException('The date format is invalid. Please enter a valid date.');
       case 'invalid-url-format':
-        return  TFormatException('The URL format is invalid. Please enter a valid URL.'.tr);
+        return  const TFormatException('The URL format is invalid. Please enter a valid URL.');
       case 'invalid-credit-card-format':
-        return  TFormatException('The credit card format is invalid. Please enter a valid credit card number.'.tr);
+        return  const TFormatException('The credit card format is invalid. Please enter a valid credit card number.');
       case 'invalid-numeric-format':
-        return  TFormatException('The input should be a valid numeric format.'.tr);
+        return  const TFormatException('The input should be a valid numeric format.');
     // Add more cases as needed...
       default:
-        return  TFormatException('An unexpected format error occurred. Please check your input.'.tr);
+        return  const TFormatException('An unexpected format error occurred. Please check your input.');
     }
   }
 }

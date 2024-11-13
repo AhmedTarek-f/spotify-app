@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 
-abstract class TLoaders {
+abstract class Loaders {
 
   static customToast({required message}) {
     ScaffoldMessenger.of(Get.context!).showSnackBar(

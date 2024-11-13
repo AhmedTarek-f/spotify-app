@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:spotify/core/constants/spotify_images.dart';
 
 class SpotifyCustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   const SpotifyCustomAppBar({
     super.key,
     this.backgroundColor = Colors.transparent,
     this.isStartingWidgetEnabled = false,
-    this.isThreeDotsActionEnabled=false,
+    this.isActionEnabled=false,
     this.onThreeDotsPressed,
     this.isMiddleWidgetEnabled = true,
     this.startingWidget,
     this.middleWidget,
+    this.actionWidget
   });
   final Color backgroundColor;
   final bool isStartingWidgetEnabled;
   final Widget? startingWidget;
   final Widget? middleWidget;
-  final bool isThreeDotsActionEnabled;
+  final Widget? actionWidget;
+  final bool isActionEnabled;
   final bool isMiddleWidgetEnabled;
   final void Function()? onThreeDotsPressed;
   @override
@@ -34,10 +34,7 @@ class SpotifyCustomAppBar extends StatelessWidget implements PreferredSizeWidget
         ],
       ),
       actions: [
-        if(isThreeDotsActionEnabled) IconButton(
-            onPressed: onThreeDotsPressed,
-            icon: SvgPicture.asset(SpotifyImages.threeDotsIcon)
-        )
+        if(isActionEnabled) actionWidget!
       ],
     );
   }

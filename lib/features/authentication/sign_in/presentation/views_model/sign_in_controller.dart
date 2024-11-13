@@ -35,7 +35,7 @@ class SignInController extends GetxController {
       else{
         loginFormKey.currentState!.save();
         autoValidateMode.value = AutovalidateMode.disabled;
-        TFullScreenLoader.openLoadingDialog("Logging you in...".tr, SpotifyImages.docerAnimation);
+        TFullScreenLoader.openLoadingDialog("Logging you in...", SpotifyImages.docerAnimation);
         await signInRepository.signInWithEmailAndPassword(email.text.trim(), password.text.trim());
         clearData();
         await AuthenticationRepository.instance.screenRedirect();
@@ -45,14 +45,14 @@ class SignInController extends GetxController {
     }
     catch(e){
       TFullScreenLoader.stopLoading();
-      Loaders.errorSnackBar(title: "Oh Snap!".tr,message: e.toString().tr);
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
 
   Future<void> googleSignIn()async {
     try {
       TFullScreenLoader.openLoadingDialog(
-          "Logging you in...".tr, SpotifyImages.docerAnimation);
+          "Logging you in...", SpotifyImages.docerAnimation);
       final UserCredential userCredential = await SignInWithGoogleService.signInWithGoogle();
       if (userCredential.additionalUserInfo?.isNewUser ?? false) {
         await signInRepository.saveGoogleUserRecord(userCredential);
@@ -63,7 +63,7 @@ class SignInController extends GetxController {
     }
     catch (e) {
       TFullScreenLoader.stopLoading();
-      Loaders.errorSnackBar(title: "Oh Snap!".tr, message: e.toString().tr);
+      Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
     }
   }
 

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';

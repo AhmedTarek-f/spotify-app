@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify/core/common_widgets/navigation_view/navigation_views.dart';
 import 'package:spotify/core/common_widgets/spotify_custom_button.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/authentication/password_configuration/presentation/views/forget_password_view.dart';
-import 'package:spotify/features/authentication/sign_in/data/repository/sign_in_repository.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/widgets/sign_in_email_field.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/widgets/sign_in_password_field.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views_model/sign_in_controller.dart';

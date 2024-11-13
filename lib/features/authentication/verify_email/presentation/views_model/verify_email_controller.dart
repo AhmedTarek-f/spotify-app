@@ -67,7 +67,7 @@ class VerifyEmailController extends GetxController
       Get.off(()=>SuccessScreen(
         isAnimation: true,
         image: SpotifyImages.successfullyRegisterAnimation,
-        title:"Your account created".tr,
+        title:"Your account created",
         subTitle: "",
         onPressed: () async{
           await AuthenticationRepository.instance.screenRedirect();
