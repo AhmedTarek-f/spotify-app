@@ -31,7 +31,10 @@ abstract class SpotifyImages {
   static const String song2= "assets/images/songs_images/song2.png";
   static const String song3= "assets/images/songs_images/song3.png";
   static const String song4= "assets/images/songs_images/song4.png";
-  static const String profilePic= "assets/images/my_grad_pic.jpg";
+  static const String profilePic= "assets/images/songs_images/user_Img.jpg";
+  static const String profileLeftSlashes= "assets/images/songs_images/profile_left_slashes.png";
+  static const String cameraIcon= "assets/images/icons/camera_icon.png";
+  static const String galleryIcon= "assets/images/icons/gallery_icon.png";
 
   // -- Lottie Animations
   static const String docerAnimation = "assets/images/animations/141594-animation-of-docer.json";
