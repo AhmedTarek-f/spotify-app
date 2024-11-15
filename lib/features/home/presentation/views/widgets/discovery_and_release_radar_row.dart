@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:spotify/core/constants/spotify_images.dart';
-import 'package:spotify/features/home/data/models/songs_collection_model.dart';
+import 'package:get/get.dart';
+import 'package:spotify/core/common_widgets/shimmer/songs_collection_shimmer.dart';
 import 'package:spotify/features/home/presentation/views/widgets/songs_collection_container.dart';
+import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
 
 class DiscoveryAndReleaseRadarRow extends StatelessWidget {
   const DiscoveryAndReleaseRadarRow({super.key});
-  final SongsCollectionModel discoveryCollection = const SongsCollectionModel(collectionImg: SpotifyImages.album1, collectionTitle: "Discover Weekly");
-  final SongsCollectionModel releaseRadarCollection = const SongsCollectionModel(collectionImg: SpotifyImages.album2, collectionTitle: "Release Radar");
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SongsCollectionContainer(songsCollection: discoveryCollection,),
-        SongsCollectionContainer(songsCollection: releaseRadarCollection,),
-      ],
+    final controller = HomeController.instance;
+    return Obx(
+      ()=> Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          controller.isLoading.value? const Expanded(child: SongsCollectionShimmer()) :SongsCollectionContainer(songsCollection: controller.discoveryPlaylist.value,),
+          controller.isLoading.value? const Expanded(child: SongsCollectionShimmer()) :SongsCollectionContainer(songsCollection: controller.releaseRadarPlaylist.value,),
+        ],
+      ),
     );
   }
 }
+
+
+

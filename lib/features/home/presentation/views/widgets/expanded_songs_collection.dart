@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
+import 'package:spotify/features/playlist_details/views/playlist_details_view.dart';
+import 'package:spotify/features/playlist_details/views/widgets/playlist_details_view_body.dart';
 
 class ExpandedSongsCollectionContainer extends StatelessWidget {
   const ExpandedSongsCollectionContainer({super.key, required this.songsCollection});
@@ -11,15 +15,23 @@ class ExpandedSongsCollectionContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image.asset(
-                songsCollection.collectionImg,
-                fit: BoxFit.contain,
+          child: GestureDetector(
+            onTap: (){
+              Get.to(
+                ()=> const PlaylistDetailsView(),
+                arguments: {"playlist":songsCollection}
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: CachedNetworkImage(
+                  imageUrl: songsCollection.collectionImg,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
