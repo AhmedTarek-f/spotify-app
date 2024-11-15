@@ -33,6 +33,7 @@ migrate_working_dir/
 assets/images/my_grad_pic.jpg
 lib/core/constants/api_keys.dart
 lib/features/discovery
+lib/core/not_used
 # Symbolication related
 app.*.symbols
 
