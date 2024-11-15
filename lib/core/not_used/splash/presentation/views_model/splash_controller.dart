@@ -4,8 +4,7 @@ import 'package:spotify/features/authentication/data/repository/authentication_r
 
 class SplashController extends GetxController {
   static SplashController get instance => Get.find();
-
-
+  final AuthenticationRepository authenticationRepository = Get.put(AuthenticationRepository());
   @override
   void onInit() {
     super.onInit();
@@ -14,9 +13,9 @@ class SplashController extends GetxController {
 
   Future<void> RedirectFromSplash() async{
     await Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 2),
       () => Get.offAll(
-        ()=> AuthenticationRepository.instance.redirectedScreen,
+        ()=> authenticationRepository.redirectedScreen,
         transition: Transition.rightToLeftWithFade,
         duration: const Duration(milliseconds: 600),
       ),
