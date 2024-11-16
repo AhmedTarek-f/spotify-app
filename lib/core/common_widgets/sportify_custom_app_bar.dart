@@ -6,7 +6,6 @@ class SpotifyCustomAppBar extends StatelessWidget implements PreferredSizeWidget
     this.backgroundColor = Colors.transparent,
     this.isStartingWidgetEnabled = false,
     this.isActionEnabled=false,
-    this.onThreeDotsPressed,
     this.isMiddleWidgetEnabled = true,
     this.startingWidget,
     this.middleWidget,
@@ -19,7 +18,6 @@ class SpotifyCustomAppBar extends StatelessWidget implements PreferredSizeWidget
   final Widget? actionWidget;
   final bool isActionEnabled;
   final bool isMiddleWidgetEnabled;
-  final void Function()? onThreeDotsPressed;
   @override
   Widget build(BuildContext context) {
     return AppBar(

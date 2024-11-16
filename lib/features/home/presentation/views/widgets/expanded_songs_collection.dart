@@ -18,7 +18,7 @@ class ExpandedSongsCollectionContainer extends StatelessWidget {
           child: GestureDetector(
             onTap: (){
               Get.to(
-                ()=> const PlaylistDetailsView(),
+                ()=> PlaylistDetailsView(),
                 arguments: {"playlist":songsCollection}
               );
             },

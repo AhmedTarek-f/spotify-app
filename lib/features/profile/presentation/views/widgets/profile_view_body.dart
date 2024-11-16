@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/containers/updating_container/updating_container.dart';
 import 'package:spotify/core/common_widgets/shimmer/profile_picture_shimmer.dart';
 import 'package:spotify/core/common_widgets/shimmer/shimmer_effect.dart';
+import 'package:spotify/core/common_widgets/song_common_widgets/songs_list_view.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
-import 'package:spotify/features/favorites/presentation/views/widgets/favorite_songs_list_view.dart';
 import 'package:spotify/features/profile/presentation/views/widgets/profile_picture.dart';
 import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 
@@ -100,7 +100,7 @@ class ProfileViewBody extends StatelessWidget {
             Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: MediaQuery.sizeOf(context).width*0.07179),
-                  child: const FavoriteSongsListView(),
+                  child: const SongsListView(),
                 ),
             ),
 

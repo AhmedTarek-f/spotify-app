@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class FavoriteSongItemImage extends StatelessWidget {
-  const FavoriteSongItemImage({
+class SongItemImage extends StatelessWidget {
+  const SongItemImage({
     super.key,
     required this.image,
+    this.isNetworkImage = true,
   });
 
   final String image;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,10 @@ class FavoriteSongItemImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(14),
-        child: Image.asset(
+        child:isNetworkImage? CachedNetworkImage(
+            imageUrl: image,
+            fit: BoxFit.contain,
+        ):Image.asset(
           image,
           fit: BoxFit.contain,
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spotify/core/common_widgets/song_common_widgets/songs_list_view.dart';
+import 'package:spotify/core/common_widgets/song_common_widgets/songs_play_icon.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
-import 'package:spotify/features/favorites/presentation/views/widgets/favorite_songs_list_view.dart';
-import 'package:spotify/features/favorites/presentation/views/widgets/favorite_songs_play_icon.dart';
 
 class FavoritesViewBody extends StatelessWidget {
   const FavoritesViewBody({super.key});
@@ -15,7 +15,7 @@ class FavoritesViewBody extends StatelessWidget {
               const SliverAppBar(
                 expandedHeight: 80,
                 title: Text("Liked Songs",style: SpotifyFonts.appStylesBold22,),
-                bottom: FavoriteSongsPlayIcon(),
+                bottom: SongsPlayIcon(),
                 centerTitle: true,
                 toolbarHeight: 70,
               ),
@@ -23,7 +23,7 @@ class FavoritesViewBody extends StatelessWidget {
           },
           body: const Padding(
             padding: EdgeInsets.only(top: 12.0),
-            child: FavoriteSongsListView(),
+            child: SongsListView(),
           ),
       ),
     );
