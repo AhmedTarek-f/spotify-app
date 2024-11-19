@@ -14,6 +14,7 @@ class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileController = ProfileController.instance;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return  Center(
       child:  CircleAvatar(
         radius: 48,
@@ -23,6 +24,7 @@ class ProfilePicture extends StatelessWidget {
             children: [
               CircleAvatar(
                   radius: 46.5,
+                  backgroundColor: isDarkMode? const Color(0xff2C2A2B):Colors.white,
                   child: profileController.isLoading.value?
                   const ShimmerEffect(width: 92, height: 92,radius: 92,):
                   (profileController.userData.value.profileImg?.isEmpty ?? true)?

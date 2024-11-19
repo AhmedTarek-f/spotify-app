@@ -7,25 +7,29 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/profile/data/repository/profile_repository.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
-  final ProfileRepository profileRepository = Get.put(ProfileRepository());
+  final ProfileRepository _profileRepository = Get.put(ProfileRepository());
   final RxBool isLoading = false.obs;
   final RxBool isPickingImageLoading = false.obs;
   final RxBool isUploadingImage = false.obs;
   Rx<UserModel> userData = UserModel.empty().obs;
+  RxList<SongModel> publicSongsList = <SongModel>[].obs;
+  final RxBool isPublicSongsLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     getUserData();
+    fetchAllPublicSongs();
   }
   Future<void> getUserData() async{
     try{
       isLoading.value = true;
-      userData.value = await profileRepository.fetchUserDetails();
+      userData.value = await _profileRepository.fetchUserDetails();
       isLoading.value=false;
     }
     catch(e) {
@@ -62,8 +66,8 @@ class ProfileController extends GetxController {
                       Get.back();
                       if (pickedFile != null) {
                         isUploadingImage.value = true;
-                       final String newImageUrl = await profileRepository.uploadProfileImage(image: pickedFile);
-                       await profileRepository.updateProfilePicture(newProfilePic: newImageUrl);
+                       final String newImageUrl = await _profileRepository.uploadProfileImage(image: pickedFile);
+                       await _profileRepository.updateProfilePicture(newProfilePic: newImageUrl);
                         isUploadingImage.value = false;
                        userData.value.profileImg = newImageUrl;
                        Loaders.successSnackBar(title: "Profile", message: "Your profile picture has been updated successfully.");
@@ -80,8 +84,8 @@ class ProfileController extends GetxController {
                       Get.back();
                       if (pickedFile != null) {
                         isUploadingImage.value=true;
-                        final String newImageUrl = await profileRepository.uploadProfileImage(image: pickedFile);
-                        await profileRepository.updateProfilePicture(newProfilePic: newImageUrl);
+                        final String newImageUrl = await _profileRepository.uploadProfileImage(image: pickedFile);
+                        await _profileRepository.updateProfilePicture(newProfilePic: newImageUrl);
                         isUploadingImage.value=false;
                         userData.value.profileImg = newImageUrl;
                         Loaders.successSnackBar(title: "Profile", message: "Your profile picture has been updated successfully.");
@@ -97,5 +101,28 @@ class ProfileController extends GetxController {
       backgroundColor: isDarkMode? Colors.grey[800]!: Colors.black,
       isDismissible: !isUploadingImage.value,
     );
+  }
+
+  Future<void> fetchAllPublicSongs() async {
+    try{
+      isPublicSongsLoading.value = true;
+      final allPublicSongs = await _profileRepository.fetchAllPublicSongs();
+      publicSongsList.assignAll(allPublicSongs);
+      isPublicSongsLoading.value = false;
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
+  Future<void> deleteFromYourPublicFavoriteSongs({required String songId}) async {
+    try{
+      await _profileRepository.deleteFromYourPublicFavoriteSongs(songId: songId);
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
   }
 }
