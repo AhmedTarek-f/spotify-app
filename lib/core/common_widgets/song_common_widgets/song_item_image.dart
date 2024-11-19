@@ -5,11 +5,9 @@ class SongItemImage extends StatelessWidget {
   const SongItemImage({
     super.key,
     required this.image,
-    this.isNetworkImage = true,
   });
 
   final String image;
-  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +19,10 @@ class SongItemImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(14),
-        child:isNetworkImage? CachedNetworkImage(
+        child:CachedNetworkImage(
             imageUrl: image,
             fit: BoxFit.contain,
-        ):Image.asset(
-          image,
-          fit: BoxFit.contain,
-        ),
+        )
       ),
     );
   }

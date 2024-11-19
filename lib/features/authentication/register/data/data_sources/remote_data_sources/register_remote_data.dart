@@ -44,6 +44,9 @@ class RegisterRemoteData extends GetxController{
             userName: userName,
             email: userCredential.user!.email ?? "",
             profileImg: userCredential.user!.photoURL,
+            followers: 0,
+            following: 0,
+
           );
 
           await registerUserData(user);

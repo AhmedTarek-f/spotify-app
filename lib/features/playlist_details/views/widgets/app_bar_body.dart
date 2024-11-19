@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/song_common_widgets/songs_play_icon.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
+import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
 
 class AppBarBody extends StatelessWidget implements PreferredSizeWidget{
-  const AppBarBody({super.key});
-
+  const AppBarBody({super.key, required this.playlist});
+  final SongsCollectionModel playlist;
   @override
   Widget build(BuildContext context) {
-    final SongsCollectionModel playlist = Get.arguments["playlist"];
+    final controller = PlaylistDetailsController.instance;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         Container(
@@ -43,7 +44,14 @@ class AppBarBody extends StatelessWidget implements PreferredSizeWidget{
         const SizedBox(height: 22,),
         Text(playlist.collectionTitle,style: SpotifyFonts.appStylesBold22,),
         const SizedBox(height: 12,),
-        const SongsPlayIcon(),
+        SongsPlayIcon(
+          onPressed: (){},
+          icon: Icon(
+            controller.isPlaying.value? Icons.pause :Icons.play_arrow,
+            size: 28,
+            color: isDarkMode?Colors.white:Colors.black,
+          ),
+        ),
 
       ],
     );

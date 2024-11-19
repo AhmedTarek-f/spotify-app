@@ -5,13 +5,17 @@ class UserModel {
     required this.id,
     required this.userName,
     required this.email,
-    this.profileImg
+    this.profileImg,
+    this.followers,
+    this.following
   });
 
   final String id;
   final String userName;
   final String email;
   String? profileImg;
+  num? followers;
+  num? following;
 
   static UserModel empty() =>  UserModel(id: "", userName: "", email: "");
 
@@ -21,6 +25,8 @@ class UserModel {
       "UserName":userName,
       "Email":email,
       "ProfileImg":profileImg,
+      "Followers":followers,
+      "Following":following,
     };
   }
 
@@ -43,6 +49,8 @@ class UserModel {
           userName: data["UserName"] as String,
           email: data["Email"] as String,
           profileImg: data["ProfileImg"] as String?,
+          followers: data["Followers"] as num?,
+          following: data["Following"] as num?,
       );
     }
     else{

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
-import 'package:spotify/core/utlis/popups/t_full_screen_loader.dart';
+import 'package:spotify/core/utlis/popups/full_screen_loader.dart';
 import 'package:spotify/core/utlis/services/auth_services/additional_auth_services/additional_auth_services.dart';
 
 class ResetPasswordController extends GetxController
@@ -11,9 +11,9 @@ class ResetPasswordController extends GetxController
 
   Future<void> resendPasswordResetEmail({required String email}) async{
     try{
-        TFullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation);
         await AdditionalAuthServices.sendPasswordResetEmail(email: email);
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         Loaders.successSnackBar(
           title: "Email Sent",
           message: "Email Link Sent to Reset your Password",
@@ -21,7 +21,7 @@ class ResetPasswordController extends GetxController
     }
     catch(e)
     {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(
         title: "Oh Snap!",
         message: e.toString(),

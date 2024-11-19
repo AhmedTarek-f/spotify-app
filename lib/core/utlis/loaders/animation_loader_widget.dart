@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:spotify/core/constants/spotify_fonts.dart';
 
-class TAnimationLoaderWidget extends StatelessWidget {
-  const TAnimationLoaderWidget({
+class AnimationLoaderWidget extends StatelessWidget {
+  const AnimationLoaderWidget({
     super.key,
     required this.text,
     required this.animation,
@@ -26,8 +27,9 @@ class TAnimationLoaderWidget extends StatelessWidget {
           const SizedBox(height: 24,),
           Text(
             text,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: SpotifyFonts.appStylesMedium16,
             textAlign: TextAlign.center,
+            overflow: TextOverflow.visible,
           ),
           const SizedBox(height: 24,),
           if(showAction)SizedBox(
@@ -37,7 +39,7 @@ class TAnimationLoaderWidget extends StatelessWidget {
               style: OutlinedButton.styleFrom(backgroundColor: Colors.grey.shade700),
               child: Text(
                 actionText ?? "",
-                style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),
+                style: SpotifyFonts.appStylesMedium16.copyWith(color: Colors.white),
               ),
             ),
           ),

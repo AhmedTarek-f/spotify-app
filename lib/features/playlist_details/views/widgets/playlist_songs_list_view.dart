@@ -11,7 +11,7 @@ class PlaylistSongsListView extends StatelessWidget {
     final controller = PlaylistDetailsController.instance;
     return Obx(
         ()=> controller.isSongsLoading.value? const ListOfSongsShimmer():ListView.separated(
-          itemBuilder: (_, index) => SongItem(songDetails: controller.playlistSongs.elementAt(index),),
+          itemBuilder: (_, index) => SongItem(songDetails: controller.playlistSongs.elementAt(index),isThreeDotsWidgetUsed: false,),
           separatorBuilder: (_, __) => const SizedBox(height: 12,),
           itemCount: controller.playlistSongs.length
       ),

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/playlist_details/views/playlist_details_view.dart';
-import 'package:spotify/features/playlist_details/views/widgets/playlist_details_view_body.dart';
 
 class ExpandedSongsCollectionContainer extends StatelessWidget {
   const ExpandedSongsCollectionContainer({super.key, required this.songsCollection});
@@ -18,7 +17,7 @@ class ExpandedSongsCollectionContainer extends StatelessWidget {
           child: GestureDetector(
             onTap: (){
               Get.to(
-                ()=> PlaylistDetailsView(),
+                ()=> PlaylistDetailsView(playlist: songsCollection,),
                 arguments: {"playlist":songsCollection}
               );
             },

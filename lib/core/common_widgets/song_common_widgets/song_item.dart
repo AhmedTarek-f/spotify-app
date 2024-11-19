@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/song_common_widgets/song_item_image.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
-import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
+import 'package:spotify/features/song_details/presentation/views/song_details_view.dart';
 
 class SongItem extends StatelessWidget {
-  const SongItem({super.key, required this.songDetails, this.isNetworkImage});
+  const SongItem({
+    super.key,
+    required this.songDetails,
+    this.threeDotsWidget,
+    this.isThreeDotsWidgetUsed = true,
+  });
   final SongModel songDetails;
-  final bool? isNetworkImage;
+  final Widget? threeDotsWidget;
+  final bool isThreeDotsWidgetUsed;
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: (){
-
+        Get.to(
+          () => const SongDetailsView(),
+          arguments: {"songDetails":songDetails}
+        );
       },
       splashColor: SpotifyColors.primaryColor.withOpacity(0.3),
       highlightColor: SpotifyColors.primaryColor.withOpacity(0.3),
@@ -34,7 +43,7 @@ class SongItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SongItemImage(image: songDetails.songImage,isNetworkImage: isNetworkImage ?? true,),
+            SongItemImage(image: songDetails.songImage),
             const SizedBox(width: 20,),
             Expanded(
               flex: 3,
@@ -51,7 +60,7 @@ class SongItem extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: Text(songDetails.songLength,style: SpotifyFonts.appStylesRegular15,)),
-                  Expanded(child: SvgPicture.asset(SpotifyImages.threeDotsHorizontallyIcon)),
+                  if(isThreeDotsWidgetUsed)Expanded(child: threeDotsWidget!),
                 ],
               ),
             )

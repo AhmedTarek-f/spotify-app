@@ -35,6 +35,11 @@ abstract class SpotifyImages {
   static const String profileLeftSlashes= "assets/images/songs_images/profile_left_slashes.png";
   static const String cameraIcon= "assets/images/icons/camera_icon.png";
   static const String galleryIcon= "assets/images/icons/gallery_icon.png";
+  static const String arrowUp= "assets/images/icons/arrow_up.svg";
+  static const String nextIcon= "assets/images/icons/next.svg";
+  static const String previousIcon= "assets/images/icons/previous.svg";
+  static const String repeatIcon= "assets/images/icons/repeate.svg";
+  static const String shuffleIcon= "assets/images/icons/shuffle.svg";
 
   // -- Lottie Animations
   static const String docerAnimation = "assets/images/animations/141594-animation-of-docer.json";
@@ -55,6 +60,8 @@ abstract class SpotifyImages {
   static const String loaderAnimation = "assets/images/animations/loader-animation.json";
   static const String languageAnimation = "assets/images/animations/Animation-lang.json";
   static const String couponAnimation = "assets/images/animations/coupons.json";
+  static const String flyingSongsAnimation = "assets/images/animations/flying_songs.json";
+  static const String headphonesAnimation = "assets/images/animations/headphones.json";
 
   static const String deliveredEmailIllustration = "assets/images/animations/sammy-line-man-receives-a-mail.png";
 

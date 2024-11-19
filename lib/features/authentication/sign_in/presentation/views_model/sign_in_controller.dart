@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
-import 'package:spotify/core/utlis/popups/t_full_screen_loader.dart';
+import 'package:spotify/core/utlis/popups/full_screen_loader.dart';
 import 'package:spotify/core/utlis/services/auth_services/sign_in_with_google_service/sign_in_with_google_service.dart';
 import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';
 import 'package:spotify/features/authentication/sign_in/data/repository/sign_in_repository.dart';
@@ -35,34 +35,34 @@ class SignInController extends GetxController {
       else{
         loginFormKey.currentState!.save();
         autoValidateMode.value = AutovalidateMode.disabled;
-        TFullScreenLoader.openLoadingDialog("Logging you in...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("Logging you in...", SpotifyImages.docerAnimation);
         await signInRepository.signInWithEmailAndPassword(email.text.trim(), password.text.trim());
         clearData();
         await AuthenticationRepository.instance.screenRedirect();
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         Get.offAll(() => AuthenticationRepository.instance.redirectedScreen);
       }
     }
     catch(e){
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
 
   Future<void> googleSignIn()async {
     try {
-      TFullScreenLoader.openLoadingDialog(
+      FullScreenLoader.openLoadingDialog(
           "Logging you in...", SpotifyImages.docerAnimation);
       final UserCredential userCredential = await SignInWithGoogleService.signInWithGoogle();
       if (userCredential.additionalUserInfo?.isNewUser ?? false) {
         await signInRepository.saveGoogleUserRecord(userCredential);
       }
       await AuthenticationRepository.instance.screenRedirect();
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Get.offAll(() => AuthenticationRepository.instance.redirectedScreen);
     }
     catch (e) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
     }
   }

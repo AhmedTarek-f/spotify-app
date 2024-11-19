@@ -21,10 +21,13 @@ class SpotifyCustomAppBar extends StatelessWidget implements PreferredSizeWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
+      leadingWidth: 0,
+      leading: null,
       elevation: 0,
       backgroundColor: backgroundColor,
       title: Row(
-        mainAxisAlignment: isStartingWidgetEnabled? MainAxisAlignment.start :MainAxisAlignment.center,
+        mainAxisAlignment:MainAxisAlignment.start,
         children: [
           if(isStartingWidgetEnabled) startingWidget!,
           if(isMiddleWidgetEnabled && isStartingWidgetEnabled) SizedBox(width: MediaQuery.sizeOf(context).width*0.2102,),

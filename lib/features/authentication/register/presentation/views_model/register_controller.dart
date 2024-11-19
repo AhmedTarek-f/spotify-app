@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
-import 'package:spotify/core/utlis/popups/t_full_screen_loader.dart';
+import 'package:spotify/core/utlis/popups/full_screen_loader.dart';
 import 'package:spotify/core/utlis/services/auth_services/register_with_email_and_password_service/register_with_email_and_password_service.dart';
 import 'package:spotify/core/utlis/services/auth_services/sign_in_with_google_service/sign_in_with_google_service.dart';
 import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';
@@ -40,22 +40,24 @@ class RegisterController extends GetxController {
       else{
         registerFormKey.currentState!.save();
         autoValidateMode.value = AutovalidateMode.disabled;
-        TFullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
         final UserCredential userCredential = await RegisterWithEmailAndPasswordService.registerWithEmailAndPassword(email.text.trim(), password.text.trim());
         final newUser = UserModel(
           id: userCredential.user!.uid,
           userName: userName.text.trim(),
           email: email.text.trim(),
+          following: 0,
+          followers: 0,
         );
 
         await _registerRepositoryController.registerUser(userData: newUser);
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         Loaders.successSnackBar(title: "Congratulations",message: "Your account has been created! Verify email to continue.");
         Get.to(()=> VerifyEmailView(email: email.text.trim(),));
       }
     }
     catch(e){
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
@@ -63,18 +65,18 @@ class RegisterController extends GetxController {
   Future<void> signUpWithGoogle() async
   {
     try{
-      TFullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
+      FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
       final UserCredential userCredential = await SignInWithGoogleService.signInWithGoogle();
       if(userCredential.additionalUserInfo?.isNewUser ?? false){
         await _registerRepositoryController.saveGoogleUserRecord(userCredential);
       }
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       await AuthenticationRepository.instance.screenRedirect();
       Get.offAll(()=>AuthenticationRepository.instance.redirectedScreen);
     }
     catch(e)
     {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: "Data not saved!",message: e.toString());
     }
   }

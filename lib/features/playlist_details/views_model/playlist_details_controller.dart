@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:get_it/get_it.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
@@ -14,14 +12,22 @@ class PlaylistDetailsController extends GetxController {
   final homeController = HomeController.instance;
   SongsCollectionModel playlist = Get.arguments["playlist"];
   RxBool isSongsLoading = false.obs;
+  RxBool isPlaying = false.obs;
   RxList<SongModel> playlistSongs = <SongModel>[].obs;
 
 
   @override
   void onInit() {
     super.onInit();
-    if(playlist.id!="001" && playlist.id!="002" && (!homeController.recentlyPlayedPlaylists.any((item)=>item.id == playlist.id))) homeController.addToRecentlyPlayedPlaylists(playlist: playlist);
+    addToRecentlyPlayedPlaylists(playlist: playlist);
     fetchPlaylistSongs(playlistId: playlist.id);
+  }
+
+  Future<void> addToRecentlyPlayedPlaylists({required SongsCollectionModel playlist}) async{
+    if(playlist.id!="001" &&
+        playlist.id!="002" &&
+        (!homeController.recentlyPlayedPlaylists.any((item)=>item.id == playlist.id))
+    ) await homeController.addToRecentlyPlayedPlaylists(playlist: playlist);
   }
 
   Future<void> fetchPlaylistSongs({required String playlistId}) async {

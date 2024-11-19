@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
+import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/data/repository/home_repository.dart';
 
@@ -9,6 +10,7 @@ class HomeController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isRecentlyPlayedPlaylistsLoading = false.obs;
   final RxBool isYourCreatedPlaylistsLoading = false.obs;
+  final RxBool isNewAlbumsLoading = false.obs;
   RxList<SongsCollectionModel> songsPlaylists = <SongsCollectionModel>[].obs;
   final Rx<SongsCollectionModel> discoveryPlaylist = SongsCollectionModel
       .empty()
@@ -18,11 +20,13 @@ class HomeController extends GetxController {
       .obs;
   RxList<SongsCollectionModel> recentlyPlayedPlaylists = <SongsCollectionModel>[].obs;
   RxList<SongsCollectionModel> yourCreatedPlaylists = <SongsCollectionModel>[].obs;
+  RxList<NewAlbumModel> newAlbums = <NewAlbumModel>[].obs;
 
 
   @override
   void onInit() {
     super.onInit();
+    fetchAllNewAlbums();
     getRecentlyPlayedPlaylists();
     getYourCreatedPlaylists();
     getAllPlaylists();
@@ -81,6 +85,19 @@ class HomeController extends GetxController {
       recentlyPlayedPlaylists.insert(0,playlist);
     }
     catch (e) {
+      Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  Future<void> fetchAllNewAlbums() async{
+    try{
+      isNewAlbumsLoading.value = true;
+      final allNewAlbums = await _homeRepo.fetchAllNewAlbums();
+      newAlbums.assignAll(allNewAlbums);
+      isNewAlbumsLoading.value = false;
+    }
+    catch (e)
+    {
       Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
     }
   }

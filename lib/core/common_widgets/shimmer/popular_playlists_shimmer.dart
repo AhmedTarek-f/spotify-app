@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spotify/core/common_widgets/shimmer/shimmer_effect.dart';
 import 'package:spotify/core/common_widgets/shimmer/songs_collection_shimmer.dart';
 
 class PopularPlaylistsShimmer extends StatelessWidget {

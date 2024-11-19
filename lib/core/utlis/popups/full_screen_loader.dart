@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
-import 'package:spotify/core/utlis/loaders/t_animation_loader_widget.dart';
+import 'package:spotify/core/utlis/loaders/animation_loader_widget.dart';
 
-abstract class TFullScreenLoader
+abstract class FullScreenLoader
 {
   static void openLoadingDialog(String text, String animation)
   {
@@ -20,7 +20,7 @@ abstract class TFullScreenLoader
               child: Column(
                 children: [
                   const SizedBox(height: 200,),
-                  TAnimationLoaderWidget(text: text, animation: animation,)
+                  AnimationLoaderWidget(text: text, animation: animation,)
                 ],
               ),
             )
