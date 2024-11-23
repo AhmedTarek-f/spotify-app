@@ -16,7 +16,7 @@ class AddOrRemoveFromFavButton extends StatelessWidget {
     return Obx(
           ()=> IconButton(
           onPressed: () async{
-            await controller.addOrRemoveFavoriteSong(songId: controller.songDetails.songId);
+            await controller.addOrRemoveFavoriteSong(songId: controller.currentSong.songId);
           },
           icon:controller.isFavorite.value?SvgPicture.asset(SpotifyImages.loveIcon,width: 24,height: 24,colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),):SvgPicture.asset(SpotifyImages.heartIcon,width: 24,height: 24,)),
     );

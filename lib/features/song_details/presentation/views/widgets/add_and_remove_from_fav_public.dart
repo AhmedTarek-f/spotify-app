@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
-import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 import 'package:spotify/features/song_details/presentation/views_model/song_details_controller.dart';
 
 class AddAndRemoveFromFavPublic extends StatelessWidget {
@@ -14,21 +12,16 @@ class AddAndRemoveFromFavPublic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = SongDetailsController.instance;
-    final profileController = Get.put(ProfileController());;
     return Padding(
       padding: EdgeInsets.only(right: MediaQuery.sizeOf(context).width*0.055),
       child: PopupMenuButton<String>(
         offset: const Offset(0, 40),
         onSelected: (value) async{
           if (value == "addToFavoriteProfile"){
-            controller.isFavoritePublic.value=true;
-            profileController.publicSongsList.add(controller.songDetails);
-            await controller.addToYourPublicFavoriteSongs(songId: controller.songDetails.songId);
+           await controller.addToFavoritePublicSongs();
           }
           else if(value == "removeFromFavoriteProfile"){
-            controller.isFavoritePublic.value=false;
-            profileController.publicSongsList.removeWhere((song) => song.songId == controller.songDetails.songId);
-            await controller.deleteFromYourPublicFavoriteSongs(songId: controller.songDetails.songId);
+           await controller.removeFromFavoritePublicSongs();
           }
         },
         itemBuilder: (context) => [
