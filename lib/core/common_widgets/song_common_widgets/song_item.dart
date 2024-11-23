@@ -12,18 +12,22 @@ class SongItem extends StatelessWidget {
     required this.songDetails,
     this.threeDotsWidget,
     this.isThreeDotsWidgetUsed = true,
+    required this.playlistSongs,
+    required this.index,
   });
   final SongModel songDetails;
   final Widget? threeDotsWidget;
   final bool isThreeDotsWidgetUsed;
+  final List<SongModel> playlistSongs;
+  final int index;
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: (){
         Get.to(
-          () => const SongDetailsView(),
-          arguments: {"songDetails":songDetails}
+          () =>  const SongDetailsView(),
+          arguments: {"songDetails":songDetails,"playlistSongs": playlistSongs ,"index":index},
         );
       },
       splashColor: SpotifyColors.primaryColor.withOpacity(0.3),
@@ -56,7 +60,7 @@ class SongItem extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: isThreeDotsWidgetUsed?2:1,
               child: Row(
                 children: [
                   Expanded(child: Text(songDetails.songLength,style: SpotifyFonts.appStylesRegular15,)),

@@ -14,7 +14,7 @@ class PublicSongsListView extends StatelessWidget {
     return Obx(
         ()=> controller.isPublicSongsLoading.value? const ListOfSongsShimmer() :ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (_, index) => SongItem(songDetails: controller.publicSongsList.elementAt(index), threeDotsWidget: PublicSongThreeDots(songItem: controller.publicSongsList.elementAt(index),),),
+          itemBuilder: (_, index) => SongItem(songDetails: controller.publicSongsList.elementAt(index), threeDotsWidget: PublicSongThreeDots(songItem: controller.publicSongsList.elementAt(index),), playlistSongs: controller.publicSongsList,index: index,),
           separatorBuilder: (_, __) => const SizedBox(height: 12,),
           itemCount: controller.publicSongsList.length
       ),

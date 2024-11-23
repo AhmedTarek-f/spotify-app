@@ -9,6 +9,7 @@ class SongModel {
     required this.songAuthor,
     required this.songLength,
     required this.songUrl,
+    required this.lyrics
   });
 
   final String playlistId;
@@ -18,8 +19,9 @@ class SongModel {
   final String songAuthor;
   final String songLength;
   final String songUrl;
+  final String lyrics;
 
-  static SongModel empty() => const SongModel(songId: "", playlistId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "");
+  static SongModel empty() => const SongModel(songId: "", playlistId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "", lyrics: '');
 
   Map<String,dynamic> toJson() {
     return {
@@ -29,6 +31,7 @@ class SongModel {
       "SongAuthor":songAuthor,
       "SongLength":songLength,
       "SongUrl":songUrl,
+      "Lyrics":lyrics,
     };
   }
 
@@ -43,6 +46,7 @@ class SongModel {
           songAuthor:snapshot["SongAuthor"] as String,
           songLength:snapshot["SongLength"] as String,
           songUrl:snapshot["SongUrl"] as String,
+          lyrics:snapshot["Lyrics"] as String,
       );
     }
     else{

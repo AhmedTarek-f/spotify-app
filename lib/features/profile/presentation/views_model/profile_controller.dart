@@ -13,6 +13,7 @@ import 'package:spotify/features/profile/data/repository/profile_repository.dart
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
   final ProfileRepository _profileRepository = Get.put(ProfileRepository());
+
   final RxBool isLoading = false.obs;
   final RxBool isPickingImageLoading = false.obs;
   final RxBool isUploadingImage = false.obs;
@@ -125,4 +126,5 @@ class ProfileController extends GetxController {
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
+
 }
