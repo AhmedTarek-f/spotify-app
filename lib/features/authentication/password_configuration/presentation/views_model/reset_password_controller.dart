@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
@@ -9,9 +10,9 @@ class ResetPasswordController extends GetxController
   static ResetPasswordController get instance => Get.find();
 
 
-  Future<void> resendPasswordResetEmail({required String email}) async{
+  Future<void> resendPasswordResetEmail({required String email , required BuildContext context}) async{
     try{
-        FullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation,context);
         await AdditionalAuthServices.sendPasswordResetEmail(email: email);
         FullScreenLoader.stopLoading();
         Loaders.successSnackBar(

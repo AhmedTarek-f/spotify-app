@@ -60,7 +60,7 @@ class ForgetPasswordViewBody extends StatelessWidget {
                         height: MediaQuery.sizeOf(context).height*0.07,
                           buttonTitle: "Submit",
                           onPressed: ()async{
-                            await controller.sendPasswordResetEmail();
+                            await controller.sendPasswordResetEmail(context: context);
                           },
                       ),
                     ),

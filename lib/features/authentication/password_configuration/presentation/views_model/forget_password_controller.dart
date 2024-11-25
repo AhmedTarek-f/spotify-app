@@ -25,14 +25,14 @@ class ForgetPasswordController extends GetxController
     update();
   }
 
-  Future<void> sendPasswordResetEmail() async{
+  Future<void> sendPasswordResetEmail({required BuildContext context}) async{
     try{
       if(!forgetPasswordKey.currentState!.validate()){
         applyAutoValidateMode();
       }
       else{
         disableAutoValidateMode();
-        FullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("Processing your request...", SpotifyImages.docerAnimation,context);
         await AdditionalAuthServices.sendPasswordResetEmail(email: email.text.trim());
         FullScreenLoader.stopLoading();
         Loaders.successSnackBar(

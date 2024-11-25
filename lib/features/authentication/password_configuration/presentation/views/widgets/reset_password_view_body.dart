@@ -47,7 +47,7 @@ class ResetPasswordViewBody extends StatelessWidget {
                 width: MediaQuery.sizeOf(context).width,
                 child: TextButton(
                   onPressed: ()async{
-                    await controller.resendPasswordResetEmail(email:email);
+                    await controller.resendPasswordResetEmail(email:email,context: context);
                   },
                   child: const Text("Resend Email"),
                 ),

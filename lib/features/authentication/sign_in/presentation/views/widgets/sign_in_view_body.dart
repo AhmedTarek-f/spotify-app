@@ -37,7 +37,7 @@ class SignInViewBody extends StatelessWidget {
           const SizedBox(height: 44,),
           SocialButtons(
             googleOnPressed: ()async {
-              await controller.googleSignIn();
+              await controller.googleSignIn(context: context);
             },
             appleOnPressed: (){},
           ),

@@ -45,7 +45,7 @@ class SignInForm extends StatelessWidget {
                 height: MediaQuery.sizeOf(context).height*0.09478,
                 titleStyle: SpotifyFonts.appStylesBold20.copyWith(color: Colors.white),
                 onPressed: ()async{
-                  await signInController.signIn();
+                  await signInController.signIn(context: context);
                 },
               ),
             ],

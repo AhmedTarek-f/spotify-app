@@ -30,7 +30,7 @@ class RegisterController extends GetxController {
     super.onInit();
   }
 
-  Future<void> signUp()async {
+  Future<void> signUp({required BuildContext context})async {
     try{
       if(!registerFormKey.currentState!.validate())
       {
@@ -40,7 +40,7 @@ class RegisterController extends GetxController {
       else{
         registerFormKey.currentState!.save();
         autoValidateMode.value = AutovalidateMode.disabled;
-        FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation,context);
         final UserCredential userCredential = await RegisterWithEmailAndPasswordService.registerWithEmailAndPassword(email.text.trim(), password.text.trim());
         final newUser = UserModel(
           id: userCredential.user!.uid,
@@ -62,10 +62,10 @@ class RegisterController extends GetxController {
     }
   }
 
-  Future<void> signUpWithGoogle() async
+  Future<void> signUpWithGoogle({required BuildContext context}) async
   {
     try{
-      FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation);
+      FullScreenLoader.openLoadingDialog("We are processing your information...", SpotifyImages.docerAnimation,context);
       final UserCredential userCredential = await SignInWithGoogleService.signInWithGoogle();
       if(userCredential.additionalUserInfo?.isNewUser ?? false){
         await _registerRepositoryController.saveGoogleUserRecord(userCredential);

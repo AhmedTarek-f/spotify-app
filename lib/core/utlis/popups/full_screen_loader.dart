@@ -5,11 +5,11 @@ import 'package:spotify/core/utlis/loaders/animation_loader_widget.dart';
 
 abstract class FullScreenLoader
 {
-  static void openLoadingDialog(String text, String animation)
+  static void openLoadingDialog(String text, String animation , BuildContext context)
   {
-    final bool isDarkMode = Theme.of(Get.context!).brightness == Brightness.dark;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     showDialog(
-        context: Get.overlayContext!,
+        context: context,
         barrierDismissible: false,
         builder: (_) => PopScope(
           canPop: false,

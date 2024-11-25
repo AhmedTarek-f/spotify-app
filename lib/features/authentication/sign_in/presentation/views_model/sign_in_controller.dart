@@ -25,7 +25,7 @@ class SignInController extends GetxController {
     password = TextEditingController();
   }
 
-  Future<void> signIn() async{
+  Future<void> signIn({required BuildContext context}) async{
     try{
       if(!loginFormKey.currentState!.validate())
       {
@@ -35,7 +35,7 @@ class SignInController extends GetxController {
       else{
         loginFormKey.currentState!.save();
         autoValidateMode.value = AutovalidateMode.disabled;
-        FullScreenLoader.openLoadingDialog("Logging you in...", SpotifyImages.docerAnimation);
+        FullScreenLoader.openLoadingDialog("Logging you in...", SpotifyImages.docerAnimation,context);
         await signInRepository.signInWithEmailAndPassword(email.text.trim(), password.text.trim());
         clearData();
         await AuthenticationRepository.instance.screenRedirect();
@@ -49,10 +49,10 @@ class SignInController extends GetxController {
     }
   }
 
-  Future<void> googleSignIn()async {
+  Future<void> googleSignIn({required BuildContext context})async {
     try {
       FullScreenLoader.openLoadingDialog(
-          "Logging you in...", SpotifyImages.docerAnimation);
+          "Logging you in...", SpotifyImages.docerAnimation,context);
       final UserCredential userCredential = await SignInWithGoogleService.signInWithGoogle();
       if (userCredential.additionalUserInfo?.isNewUser ?? false) {
         await signInRepository.saveGoogleUserRecord(userCredential);

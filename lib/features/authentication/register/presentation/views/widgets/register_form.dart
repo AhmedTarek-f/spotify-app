@@ -33,7 +33,7 @@ class RegisterForm extends StatelessWidget {
                 height: MediaQuery.sizeOf(context).height*0.09478,
                 titleStyle: SpotifyFonts.appStylesBold20.copyWith(color: Colors.white),
                 onPressed: ()async{
-                  await controller.signUp();
+                  await controller.signUp(context: context);
                 },
               ),
             ],

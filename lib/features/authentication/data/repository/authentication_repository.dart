@@ -25,6 +25,20 @@ class AuthenticationRepository extends GetxController {
     FlutterNativeSplash.remove();
   }
 
+  ThemeMode initTheme() {
+    _deviceStorage.writeIfNull("isDarkTheme", false);
+    if(_deviceStorage.read("isDarkTheme")){
+      return ThemeMode.dark;
+    }
+    else{
+      return ThemeMode.light;
+    }
+  }
+
+  bool? isDarkMode() {
+    return _deviceStorage.read("isDarkTheme");
+  }
+
   Future<void> screenRedirect() async{
     final User? user = _auth.currentUser;
     if(user !=null)
@@ -54,7 +68,7 @@ class AuthenticationRepository extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw e.toString();
     }
 
   }
@@ -65,7 +79,7 @@ class AuthenticationRepository extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw e.toString();
     }
   }
 
