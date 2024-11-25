@@ -83,7 +83,9 @@ class NavigationViews extends StatelessWidget {
           ],
         ),
       ),
-      body: Obx(() => controller.mainViews[controller.selectedIndex.value]),
+      body: Obx(
+        () => controller.mainViews[controller.selectedIndex.value]
+      ),
     );
   }
 }
