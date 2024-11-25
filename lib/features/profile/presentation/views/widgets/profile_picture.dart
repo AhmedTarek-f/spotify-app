@@ -25,14 +25,14 @@ class ProfilePicture extends StatelessWidget {
               CircleAvatar(
                   radius: 46.5,
                   backgroundColor: isDarkMode? const Color(0xff2C2A2B):Colors.white,
+                  backgroundImage: (profileController.userData.value.profileImg?.isEmpty ?? true)?
+                  const AssetImage(SpotifyImages.profilePic,):
+                  CachedNetworkImageProvider(
+                    profileController.userData.value.profileImg!,
+                  ),
                   child: profileController.isLoading.value?
-                  const ShimmerEffect(width: 92, height: 92,radius: 92,):
-                  (profileController.userData.value.profileImg?.isEmpty ?? true)?
-                  ClipOval(child: Image.asset(SpotifyImages.profilePic,fit: BoxFit.contain,)):
-                  ClipOval(child: CachedNetworkImage(
-                      imageUrl: profileController.userData.value.profileImg!,
-                    fit: BoxFit.contain,
-                  )),
+                  const ShimmerEffect(width: 92, height: 92,radius: 92,): null
+
                 ),
               Positioned(
                 right: -5,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/open_lyrics.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/show_song_lyrics.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/song_controller_row.dart';

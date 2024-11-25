@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/shimmer/songs_collection_shimmer.dart';
-import 'package:spotify/features/home/presentation/views/widgets/songs_collection_container.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/songs_collection_container.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 
 class DiscoveryAndReleaseRadarRow extends StatelessWidget {
   const DiscoveryAndReleaseRadarRow({super.key});

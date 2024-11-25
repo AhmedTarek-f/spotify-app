@@ -7,6 +7,7 @@ import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
+import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
 class HomeRemoteData extends GetxController {
   static HomeRemoteData get instance => Get.find();
@@ -126,6 +127,30 @@ class HomeRemoteData extends GetxController {
         return snapshot.docs.map((playlist) => SongsCollectionModel.fromSnapshot(playlist)).toList();
       }
       return <SongsCollectionModel>[];
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong, Please try again";
+    }
+  }
+
+  Future<List<SongModel>> fetchSongs() async {
+    try{
+      final snapshot = await _db.collection("Songs").get();
+      if(snapshot.docs.isNotEmpty){
+        return snapshot.docs.map((song) => SongModel.fromSnapshot(song)).toList();
+      }
+      return <SongModel>[];
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;

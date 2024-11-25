@@ -16,7 +16,7 @@ class ProfileRemoteData extends GetxController {
 
   Future<UserModel> fetchUserDetails() async{
     try{
-      final documentSnapshot = await _db.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).get();
+      final documentSnapshot = await _db.collection("Users").doc(_auth.currentUser!.uid).get();
       if(documentSnapshot.exists)
       {
         return UserModel.fromSnapshot(documentSnapshot);

@@ -6,7 +6,7 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 import 'package:spotify/features/playlist_details/views/playlist_details_view.dart';
 
 class AlbumContainer extends StatelessWidget {

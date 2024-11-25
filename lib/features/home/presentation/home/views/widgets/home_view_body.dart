@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotify/features/home/presentation/views/widgets/discovery_and_release_radar_row.dart';
-import 'package:spotify/features/home/presentation/views/widgets/new_albums_list_view.dart';
-import 'package:spotify/features/home/presentation/views/widgets/popular_playlists_sliver_grid.dart';
-import 'package:spotify/features/home/presentation/views/widgets/recently_played_playlists.dart';
-import 'package:spotify/features/home/presentation/views/widgets/underlined_title.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/discovery_and_release_radar_row.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/new_albums_list_view.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/popular_playlists_sliver_grid.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/recently_played_playlists.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/underlined_title.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
+    final controller = HomeController.instance;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: MediaQuery.sizeOf(context).width*0.07179),
       child:  CustomScrollView(

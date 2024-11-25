@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
+import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/data/repository/home_repository.dart';
@@ -7,6 +11,9 @@ import 'package:spotify/features/home/data/repository/home_repository.dart';
 class HomeController extends GetxController {
   static HomeController get instance => Get.find();
   final _homeRepo = Get.put(HomeRepository());
+  final AuthenticationRepository _authenticationRepository = AuthenticationRepository.instance;
+  late final RxBool isDarkMode;
+  final _deviceStorage = getIt.get<GetStorage>();
   final RxBool isLoading = false.obs;
   final RxBool isRecentlyPlayedPlaylistsLoading = false.obs;
   final RxBool isYourCreatedPlaylistsLoading = false.obs;
@@ -22,7 +29,6 @@ class HomeController extends GetxController {
   RxList<SongsCollectionModel> yourCreatedPlaylists = <SongsCollectionModel>[].obs;
   RxList<NewAlbumModel> newAlbums = <NewAlbumModel>[].obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -30,6 +36,8 @@ class HomeController extends GetxController {
     getRecentlyPlayedPlaylists();
     getYourCreatedPlaylists();
     getAllPlaylists();
+    final bool isDarkOrLight = _deviceStorage.read("isDarkTheme")!=null?_deviceStorage.read("isDarkTheme"):false;
+    isDarkMode = isDarkOrLight.obs;
   }
 
   Future<void> getAllPlaylists() async {
@@ -100,5 +108,35 @@ class HomeController extends GetxController {
     {
       Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
     }
+  }
+  Future<void> toggleThemeMode()async{
+    await changeThemeMode();
+  }
+
+  Future<void> changeThemeMode() async{
+    if(Get.isDarkMode && isDarkMode.value)
+    {
+      await _deviceStorage.write("isDarkTheme", false);
+      isDarkMode.value = false;
+      ThemeMode.light;
+      Get.changeThemeMode(ThemeMode.light);
+    }
+    else {
+      await _deviceStorage.write("isDarkTheme", true);
+      isDarkMode.value = true;
+      ThemeMode.dark;
+      Get.changeThemeMode(ThemeMode.dark);
+    }
+  }
+  Future<void> logout() async
+  {
+    try{
+      await _authenticationRepository.logout();
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+
   }
 }

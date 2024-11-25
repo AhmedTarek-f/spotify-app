@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/shimmer/popular_playlists_shimmer.dart';
-import 'package:spotify/features/home/presentation/views/widgets/expanded_songs_collection.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/expanded_songs_collection.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 
 class PopularPlaylistsSliverGrid extends StatelessWidget {
   const PopularPlaylistsSliverGrid({super.key});

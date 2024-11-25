@@ -2,7 +2,7 @@
 import 'package:get/get.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 import 'package:spotify/features/playlist_details/data/repository/playlist_details_repository.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 

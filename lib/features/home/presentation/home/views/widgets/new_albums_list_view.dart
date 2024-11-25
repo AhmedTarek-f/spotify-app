@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/shimmer/new_album_shimmer.dart';
-import 'package:spotify/features/home/presentation/views/widgets/album_container.dart';
-import 'package:spotify/features/home/presentation/views_model/home_controller.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/album_container.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 
 class NewAlbumsListView extends StatelessWidget {
   const NewAlbumsListView({super.key});

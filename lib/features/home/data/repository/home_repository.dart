@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:spotify/features/home/data/data_sources/remote_data_sources/home_remote_data.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
+import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
 class HomeRepository extends GetxController {
   static HomeRepository get instance => Get.find();
@@ -60,6 +61,15 @@ class HomeRepository extends GetxController {
   Future<List<SongsCollectionModel>> fetchYourCreatedPlaylists() async {
     try {
       return await _homeRemoteData.fetchYourCreatedPlaylists();
+    }
+    catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<List<SongModel>> fetchSongs() async {
+    try{
+      return await _homeRemoteData.fetchSongs();
     }
     catch (e) {
       throw e.toString();
