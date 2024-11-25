@@ -11,7 +11,7 @@ class SpotifyApp extends StatelessWidget {
     final AuthenticationRepository authenticationRepository = AuthenticationRepository.instance;
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
+      themeMode: authenticationRepository.isDarkMode() == null? ThemeMode.system : authenticationRepository.initTheme(),
       theme: SpotifyAppTheme.lightTheme,
       darkTheme: SpotifyAppTheme.darkTheme,
       home: authenticationRepository.redirectedScreen,
