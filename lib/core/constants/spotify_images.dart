@@ -62,6 +62,7 @@ abstract class SpotifyImages {
   static const String couponAnimation = "assets/images/animations/coupons.json";
   static const String flyingSongsAnimation = "assets/images/animations/flying_songs.json";
   static const String headphonesAnimation = "assets/images/animations/headphones.json";
+  static const String emptySearchAnimation = "assets/images/animations/empty_search_animation.json";
 
   static const String deliveredEmailIllustration = "assets/images/animations/sammy-line-man-receives-a-mail.png";
 
