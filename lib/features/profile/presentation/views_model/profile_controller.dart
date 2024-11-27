@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:spotify/core/common_widgets/rounded_container_image.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
+import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
@@ -20,6 +21,7 @@ class ProfileController extends GetxController {
   Rx<UserModel> userData = UserModel.empty().obs;
   RxList<SongModel> publicSongsList = <SongModel>[].obs;
   final RxBool isPublicSongsLoading = false.obs;
+  final ImagePicker picker = getIt.get<ImagePicker>();
 
   @override
   void onInit() {
@@ -60,7 +62,6 @@ class ProfileController extends GetxController {
                   RoundedContainerImage(
                     image: SpotifyImages.galleryIcon,
                     onTap: ()async{
-                      final ImagePicker picker = ImagePicker();
                       isPickingImageLoading.value = true;
                       final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
                       isPickingImageLoading.value = false;
@@ -78,7 +79,6 @@ class ProfileController extends GetxController {
                   RoundedContainerImage(
                     image: SpotifyImages.cameraIcon,
                     onTap: () async{
-                      final ImagePicker picker = ImagePicker();
                       isPickingImageLoading.value = true;
                       final XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
                       isPickingImageLoading.value = false;
