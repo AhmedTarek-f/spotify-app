@@ -42,7 +42,7 @@ class ProfileViewBody extends StatelessWidget {
                 const PublicSongsColumn(),
               ],
             ),
-            if(profileController.isUploadingImage.value)  const UpdatingContainer(),
+            if(profileController.isUploadingImage.value)  const UpdatingContainer(containerTitle: "Updating",),
           ],
         ),
       ),
