@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SongModel {
   const SongModel({
-    required this.playlistId,
     required this.songId,
     required this.songImage,
     required this.songTitle,
@@ -12,7 +11,6 @@ class SongModel {
     required this.lyrics
   });
 
-  final String playlistId;
   final String songId;
   final String songImage;
   final String songTitle;
@@ -21,11 +19,10 @@ class SongModel {
   final String songUrl;
   final String lyrics;
 
-  static SongModel empty() => const SongModel(songId: "", playlistId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "", lyrics: '');
+  static SongModel empty() => const SongModel(songId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "", lyrics: '');
 
   Map<String,dynamic> toJson() {
     return {
-      "PlaylistId":playlistId,
       "SongImage":songImage,
       "SongTitle":songTitle,
       "SongAuthor":songAuthor,
@@ -39,7 +36,6 @@ class SongModel {
     if(document.data() != null){
       final Map<String,dynamic> snapshot = document.data()!;
       return SongModel(
-          playlistId:snapshot["PlaylistId"] as String,
           songId: document.id,
           songImage:snapshot["SongImage"] as String,
           songTitle:snapshot["SongTitle"] as String,
