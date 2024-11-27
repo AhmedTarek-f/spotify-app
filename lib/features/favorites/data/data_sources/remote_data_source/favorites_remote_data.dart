@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
-import 'package:spotify/features/favorites/data/models/favorite_Song_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
+import 'package:spotify/features/song_details/data/models/song_id_model.dart';
 
 class FavoritesRemoteData extends GetxController{
   static FavoritesRemoteData get instance => Get.find();
@@ -17,7 +17,7 @@ class FavoritesRemoteData extends GetxController{
     try{
       final favoriteSongsIdSnapShot = await _db.collection("Users").doc(_auth.currentUser?.uid).collection("FavoriteSongs").get();
       if(favoriteSongsIdSnapShot.docs.isNotEmpty){
-        final favoriteSongsId = favoriteSongsIdSnapShot.docs.map((song)=> FavoriteSongModel.fromSnapshot(song)).toList();
+        final favoriteSongsId = favoriteSongsIdSnapShot.docs.map((song)=> SongIdModel.fromSnapshot(song)).toList();
         final favoriteSongsIdsList = favoriteSongsId.map((song) => song.songId).toList();
         final favoriteSongsSnapshot = await _db.collection("Songs").where(FieldPath.documentId,whereIn: favoriteSongsIdsList).get();
         return favoriteSongsSnapshot.docs.map((song) => SongModel.fromSnapshot(song)).toList();
