@@ -106,6 +106,11 @@ abstract class SpotifyFonts{
    fontWeight: FontWeight.w500,
    overflow: TextOverflow.ellipsis,
  );
+ static const TextStyle appStylesMedium8 = TextStyle(
+   fontSize: 8,
+   fontWeight: FontWeight.w500,
+   overflow: TextOverflow.ellipsis,
+ );
  static const TextStyle appStylesBold15 = TextStyle(
    fontSize: 15,
    fontWeight: FontWeight.w700,
