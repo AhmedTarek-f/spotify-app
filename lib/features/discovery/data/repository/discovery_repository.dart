@@ -1,9 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
-import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
-import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/discovery/data/data_sources/remote_data_sources/discovery_remote_data.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';

@@ -7,8 +7,8 @@ import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/discovery/data/model/followers_following_model.dart';
-import 'package:spotify/features/favorites/data/models/favorite_Song_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
+import 'package:spotify/features/song_details/data/models/song_id_model.dart';
 
 class DiscoveryRemoteData extends GetxController{
   static DiscoveryRemoteData get instance => Get.find();
@@ -45,7 +45,7 @@ class DiscoveryRemoteData extends GetxController{
     try{
       final snapshot = await _db.collection("Users").doc(userId).collection("PublicFavoriteSongs").get();
       if(snapshot.docs.isNotEmpty){
-       final List<FavoriteSongModel> songsList= snapshot.docs.map((song) => FavoriteSongModel.fromSnapshot(song)).toList();
+       final List<SongIdModel> songsList= snapshot.docs.map((song) => SongIdModel.fromSnapshot(song)).toList();
        final List<String> songsIDs = songsList.map((song) => song.songId).toList();
        final publicSongsList = await _db.collection("Songs").where(FieldPath.documentId, whereIn: songsIDs).get();
        return publicSongsList.docs.map((song) => SongModel.fromSnapshot(song)).toList();
