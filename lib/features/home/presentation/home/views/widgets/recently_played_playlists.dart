@@ -10,7 +10,7 @@ class RecentlyPlayedPlaylists extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = HomeController.instance;
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height*0.228,
+      height: MediaQuery.sizeOf(context).height*0.248,
       child: Obx(
             ()=> controller.isRecentlyPlayedPlaylistsLoading.value? const PlaylistsHorizontallyShimmer() :ListView.separated(
             physics: const BouncingScrollPhysics(),
@@ -20,7 +20,7 @@ class RecentlyPlayedPlaylists extends StatelessWidget {
             itemCount: controller.recentlyPlayedPlaylists.length
         ),
       ),
-      
+
     );
   }
 }

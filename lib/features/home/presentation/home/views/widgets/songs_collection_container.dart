@@ -30,7 +30,7 @@ class SongsCollectionContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
               child: CachedNetworkImage(
                   imageUrl: songsCollection.collectionImg,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -41,7 +41,7 @@ class SongsCollectionContainer extends StatelessWidget {
         ),
        if((songsCollection.createdBy?.isNotEmpty?? false) && songsCollection.createdBy?.trim() !="") Padding(
           padding: const EdgeInsets.only(left: 20,top: 4),
-          child: Text(songsCollection.createdBy!, style: SpotifyFonts.appStylesBold13,),
+          child: SizedBox(width: MediaQuery.sizeOf(context).width*0.28, child: Text("Created by: ${songsCollection.createdBy!}", style: SpotifyFonts.appStylesMedium8,)),
         ),
       ],
     );
