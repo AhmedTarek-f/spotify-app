@@ -16,8 +16,10 @@ class PlaylistDetailsController extends GetxController {
   RxBool isPlaying = false.obs;
   RxBool isDeletingPlaylist = false.obs;
   RxBool isDeletingSongLoading = false.obs;
+  RxBool isCreatedPlaylistPublic = false.obs;
   RxList<SongModel> playlistSongs = <SongModel>[].obs;
   String deletedSongName = "";
+  late final bool isCreatedPlaylistPublicOrNot;
 
 
   @override
@@ -26,6 +28,7 @@ class PlaylistDetailsController extends GetxController {
     addToRecentlyPlayedPlaylists(playlist: playlist);
     UpdateRecentlyPlayedTime(playlist: playlist);
     fetchPlaylistSongs(listOfSongs: playlist.listOfSongsIds);
+    if((playlist.createdBy?.isNotEmpty ?? false) && playlist.createdBy != null) isCreatedPlaylistAtPublic(playlist: playlist);
   }
 
   void movingPlaylistToTop() {
@@ -102,6 +105,52 @@ class PlaylistDetailsController extends GetxController {
     }
   }
 
+  Future<void> showPlaylistToFollowers({required SongsCollectionModel playlist}) async {
+    try{
+      await _playlistDetailsRepository.addCreatedPlaylistToPublic(playlist: playlist);
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
+  Future<void> hidePlaylistFromFollowers({required SongsCollectionModel playlist}) async {
+    try{
+      await _playlistDetailsRepository.deleteCreatedPlaylistFromPublic(playlist: playlist);
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
+  void toggleShowHidePlaylist() {
+    isCreatedPlaylistPublic.value = !isCreatedPlaylistPublic.value;
+  }
+
+  Future<void> checkIfAddOrDeletedFromPublic() async{
+    if(isCreatedPlaylistPublic.value != isCreatedPlaylistPublicOrNot) {
+      if(isCreatedPlaylistPublic.value){
+        await showPlaylistToFollowers(playlist: playlist);
+      }
+      else {
+        await hidePlaylistFromFollowers(playlist: playlist);
+      }
+    }
+  }
+
+  Future<void> isCreatedPlaylistAtPublic({required SongsCollectionModel playlist}) async {
+    try{
+      isCreatedPlaylistPublic.value = await _playlistDetailsRepository.isCreatedPlaylistAtPublic(playlist: playlist);
+      isCreatedPlaylistPublicOrNot =  isCreatedPlaylistPublic.value ;
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
   bool checkPlaylistCreator() {
     return ("${playlist.collectionTitle}_${playlist.id}" == "${playlist.collectionTitle}_${FirebaseAuth.instance.currentUser?.uid}");
   }
@@ -109,6 +158,7 @@ class PlaylistDetailsController extends GetxController {
   @override
   void onClose() {
     movingPlaylistToTop();
+    if((playlist.createdBy?.isNotEmpty ?? false) && playlist.createdBy != null) checkIfAddOrDeletedFromPublic();
     super.onClose();
   }
 }
