@@ -40,7 +40,7 @@ class PlaylistDetailsRemoteData extends GetxController {
     }
     catch (e)
     {
-    throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
     }
   }
 
@@ -70,7 +70,7 @@ class PlaylistDetailsRemoteData extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
     }
   }
   Future<void> UpdateRecentlyPlayedTime({required SongsCollectionModel playlist}) async {
@@ -123,7 +123,65 @@ class PlaylistDetailsRemoteData extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
+    }
+  }
+  Future<void> addCreatedPlaylistToPublic({required SongsCollectionModel playlist}) async {
+    try{
+      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("PublicCreatedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").set(playlist.toJson());
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong: ${e.toString()}";
+    }
+  }
+  Future<void> deleteCreatedPlaylistFromPublic({required SongsCollectionModel playlist}) async {
+    try{
+      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("PublicCreatedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").delete();
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong: ${e.toString()}";
+    }
+  }
+  Future<bool> isCreatedPlaylistAtPublic({required SongsCollectionModel playlist}) async {
+    try{
+      final snapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).collection("PublicCreatedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").get();
+      return snapshot.exists;
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong: ${e.toString()}";
     }
   }
 }

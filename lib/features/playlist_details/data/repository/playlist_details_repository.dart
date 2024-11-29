@@ -44,4 +44,34 @@ class PlaylistDetailsRepository extends GetxController{
       throw e.toString();
     }
   }
+
+  Future<void> addCreatedPlaylistToPublic({required SongsCollectionModel playlist}) async {
+    try{
+     await _playlistDetailsRemoteData.addCreatedPlaylistToPublic(playlist: playlist);
+    }
+    catch (e)
+    {
+      throw e.toString();
+    }
+  }
+
+  Future<void> deleteCreatedPlaylistFromPublic({required SongsCollectionModel playlist}) async {
+    try{
+      await _playlistDetailsRemoteData.deleteCreatedPlaylistFromPublic(playlist: playlist);
+    }
+    catch (e)
+    {
+      throw e.toString();
+    }
+  }
+  Future<bool> isCreatedPlaylistAtPublic({required SongsCollectionModel playlist}) async {
+    try{
+      return await _playlistDetailsRemoteData.isCreatedPlaylistAtPublic(playlist: playlist);
+    }
+    catch (e)
+    {
+      throw e.toString();
+    }
+  }
+
 }
