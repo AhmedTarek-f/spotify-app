@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
+import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
@@ -69,26 +70,6 @@ class HomeRemoteData extends GetxController {
         },
         SetOptions(merge: true),
       );
-    }
-    on FirebaseException catch (e){
-      throw TFirebaseException(e.code).message;
-    }
-    on FormatException catch (_){
-      throw const TFormatException();
-    }
-    on PlatformException catch(e)
-    {
-      throw TPlatformException(e.code).message;
-    }
-    catch (e)
-    {
-      throw "Something went wrong: ${e.toString()}";
-    }
-  }
-
-  Future<void> addToYourCreatedPlaylists({required SongsCollectionModel playlist}) async {
-    try{
-      await _db.collection("Users").doc(_auth.currentUser!.uid).collection("YourCreatedPlaylists").add(playlist.toJson());
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -229,6 +210,72 @@ class HomeRemoteData extends GetxController {
       final jsonListOfSongs = {"ListOfSongsIds":listOfSongs};
       await _db.collection("Users").doc(_auth.currentUser?.uid).collection("CreatedPlaylists").doc(playlistId).update(jsonListOfSongs);
       await _db.collection("Users").doc(_auth.currentUser?.uid).collection("RecentlyPlayedPlaylists").doc(playlistId).update(jsonListOfSongs);
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong: ${e.toString()}";
+    }
+  }
+
+  Future<List<UserModel>> fetchFollowingList() async{
+    try{
+     final snapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).collection("Following").get();
+      if(snapshot.docs.isNotEmpty){
+        final usersIdsList = snapshot.docs.map((userId) => userId["UserId"] as String).toList();
+        final usersDataSnapshot = await _db.collection("Users").where(FieldPath.documentId,whereIn:usersIdsList ).get();
+        if(usersDataSnapshot.docs.isNotEmpty){
+          return usersDataSnapshot.docs.map((user) => UserModel.fromSnapshot(user)).toList();
+        }
+        else {
+          return <UserModel>[];
+        }
+      }
+      else{
+        return <UserModel>[];
+      }
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong: ${e.toString()}";
+    }
+  }
+
+  Future<List<UserModel>> fetchFollowersList() async{
+    try{
+      final snapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).collection("Followers").get();
+      if(snapshot.docs.isNotEmpty){
+        final usersIdsList = snapshot.docs.map((userId) => userId["UserId"] as String).toList();
+        final usersDataSnapshot = await _db.collection("Users").where(FieldPath.documentId,whereIn:usersIdsList ).get();
+        if(usersDataSnapshot.docs.isNotEmpty){
+          return usersDataSnapshot.docs.map((user) => UserModel.fromSnapshot(user)).toList();
+        }
+        else {
+          return <UserModel>[];
+        }
+      }
+      else{
+        return <UserModel>[];
+      }
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
