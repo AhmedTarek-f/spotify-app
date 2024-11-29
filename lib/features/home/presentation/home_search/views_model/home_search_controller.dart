@@ -61,15 +61,20 @@ class HomeSearchController extends GetxController
       else{
         if(Get.isRegistered<PlaylistDetailsController>()){
          if(PlaylistDetailsController.instance.playlist.collectionTitle == targetedPlaylist.collectionTitle && PlaylistDetailsController.instance.playlist.collectionImg == targetedPlaylist.collectionImg)  PlaylistDetailsController.instance.playlistSongs.add(song);
-         _homeController.recentlyPlayedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!.add(song.songId);
         }
         final String playlistId = "${targetedPlaylist.collectionTitle}_${targetedPlaylist.id}";
-        _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!.add(song.songId);
+        if(_homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds == null) _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds = [];
+        _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds?.add(song.songId);
         final listOfSongs = _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!;
         isAddingSongLoading.value = true;
-        _homeController.recentlyPlayedPlaylists.any((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg))
-            ?await _homeRepo.addSongToRecentlyAndCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId)
-            : await _homeRepo.addSongToCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId);
+        if(_homeController.recentlyPlayedPlaylists.any((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg))){
+          _homeController.recentlyPlayedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds = [];
+          _homeController.recentlyPlayedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds?.assignAll(_homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!);
+          await _homeRepo.addSongToRecentlyAndCreatedPlaylists(listOfSongs: listOfSongs, playlistId: playlistId);
+        }
+        else{
+          await _homeRepo.addSongToCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId);
+        }
         isAddingSongLoading.value = false;
         Get.back();
         Loaders.successSnackBar(title: "Note!", message: "${song.songTitle} has been add successfully to ${targetedPlaylist.collectionTitle} playlist.");
