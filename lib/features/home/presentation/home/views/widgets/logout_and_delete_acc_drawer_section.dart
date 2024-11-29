@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spotify/features/authentication/sign_in/presentation/views/sign_in_view.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/default_drawer_item.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 
@@ -17,6 +19,8 @@ class LogoutAndDeleteAccDrawerSection extends StatelessWidget {
           iconColor: Colors.red,
           onTap: ()async{
             await controller.logout();
+            Get.offAll(()=> const SignInView());
+            Get.delete<HomeController>();
           },
         ),
         const SizedBox(height: 12,),
