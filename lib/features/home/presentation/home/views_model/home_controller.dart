@@ -9,6 +9,7 @@ import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';
+import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/data/repository/home_repository.dart';
@@ -25,11 +26,15 @@ class HomeController extends GetxController {
   final RxBool isNewAlbumsLoading = false.obs;
   final RxBool isPickingImageLoading = false.obs;
   final RxBool isCreatingPlaylist = false.obs;
+  final RxBool isFollowingListLoading = true.obs;
+  final RxBool isFollowersListLoading = true.obs;
   RxList<SongsCollectionModel> songsPlaylists = <SongsCollectionModel>[].obs;
   final Rx<SongsCollectionModel> discoveryPlaylist = SongsCollectionModel.empty().obs;
   final Rx<SongsCollectionModel> releaseRadarPlaylist = SongsCollectionModel.empty().obs;
   RxList<SongsCollectionModel> recentlyPlayedPlaylists = <SongsCollectionModel>[].obs;
   RxList<SongsCollectionModel> yourCreatedPlaylists = <SongsCollectionModel>[].obs;
+  RxList<UserModel> followingList = <UserModel>[].obs;
+  RxList<UserModel> followersList = <UserModel>[].obs;
   RxList<NewAlbumModel> newAlbums = <NewAlbumModel>[].obs;
   late final TextEditingController playlistTitleField;
   final ImagePicker picker = getIt.get<ImagePicker>();
@@ -202,6 +207,32 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> fetchFollowingList() async{
+    try{
+      isFollowingListLoading.value = true;
+      final allFollowing = await _homeRepo.fetchFollowingList();
+      followingList.assignAll(allFollowing);
+      isFollowingListLoading.value = false;
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  Future<void> fetchFollowersList() async{
+    try{
+      isFollowersListLoading.value = true;
+      final allFollowers = await _homeRepo.fetchFollowersList();
+      followersList.assignAll(allFollowers);
+      isFollowersListLoading.value = false;
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
   Future<void> changeThemeMode() async{
     if(Get.isDarkMode && isDarkMode.value)
     {
@@ -217,8 +248,8 @@ class HomeController extends GetxController {
       Get.changeThemeMode(ThemeMode.dark);
     }
   }
-  Future<void> logout() async
-  {
+
+  Future<void> logout() async {
     try{
       await _authenticationRepository.logout();
     }
