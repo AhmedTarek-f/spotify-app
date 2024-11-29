@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/back_arrow.dart';
 import 'package:spotify/core/common_widgets/containers/updating_container/updating_container.dart';
+import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/playlist_details/views/widgets/app_bar_body.dart';
@@ -28,15 +29,43 @@ class PlaylistDetailsViewBody extends StatelessWidget {
                   toolbarHeight: ((playlist.createdBy?.isNotEmpty ?? false) && playlist.createdBy != null)? MediaQuery.sizeOf(context).height*0.45:MediaQuery.sizeOf(context).height*0.43,
                   leading: const BackArrow(),
                   actions: [
-                    if(controller.checkPlaylistCreator()) PopupMenuButton<String>(
+                    if(controller.checkPlaylistCreator())
+                      PopupMenuButton<String>(
                       offset: const Offset(0, 40),
                       onSelected: (value) async{
                         if (value == "removePlaylist"){
                           await controller.deleteCreatedPlaylist(playlist: playlist);
                           if(!controller.isDeletingPlaylist.value) Get.back();
                         }
+                        else if (value == "showForFollowers"){
+                          controller.toggleShowHidePlaylist();
+                        }
+                        else if (value == "hideFromFollowers"){
+                          controller.toggleShowHidePlaylist();
+                        }
                       },
                       itemBuilder: (context) => [
+                      if(!controller.isCreatedPlaylistPublic.value)  const PopupMenuItem(
+                          value: 'showForFollowers',
+                          child: Row(
+                            children: [
+                              Icon(Icons.smart_display, color: SpotifyColors.primaryColor),
+                              SizedBox(width: 8),
+                              Text('Show to followers'),
+                            ],
+                          ),
+                        ),
+
+                      if(controller.isCreatedPlaylistPublic.value)const PopupMenuItem(
+                          value: 'hideFromFollowers',
+                          child: Row(
+                            children: [
+                              Icon(Icons.hide_source, color: Colors.red),
+                              SizedBox(width: 8),
+                              Text('Hide from followers'),
+                            ],
+                          ),
+                        ),
                         const PopupMenuItem(
                           value: 'removePlaylist',
                           child: Row(
@@ -46,7 +75,7 @@ class PlaylistDetailsViewBody extends StatelessWidget {
                               Text('Delete Playlist'),
                             ],
                           ),
-                        )
+                        ),
                       ],
                       icon:  SvgPicture.asset(SpotifyImages.threeDotsIcon),
                     ),
