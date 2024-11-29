@@ -19,7 +19,6 @@ class AuthRemoteData extends GetxController{
     try{
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
-      Get.offAll(()=> const SignInView());
     }on FirebaseAuthException catch (e)
     {
       throw TFirebaseAuthException(e.code).message;
