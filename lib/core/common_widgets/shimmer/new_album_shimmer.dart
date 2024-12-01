@@ -17,30 +17,37 @@ class NewAlbumShimmer extends StatelessWidget {
         color: SpotifyColors.primaryColor,
       ),
       child: Stack(
-          clipBehavior: Clip.none,
           children:[
-            Positioned(
-              bottom: 0,
-              right: MediaQuery.sizeOf(context).width*0.12731,
-              child: ShimmerEffect(width: MediaQuery.sizeOf(context).width*0.2546, height: MediaQuery.sizeOf(context).height*0.1634,radius: 60,),
-            ),
             Positioned(
               top: 0,
               right: 0,
               child:  Image.asset(SpotifyImages.homeAlbumSlashes),
             ),
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width*0.4038,
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ShimmerEffect(width: 70, height: 12),
-                  SizedBox(height: 12,),
-                  ShimmerEffect(width: 120, height: 22),
-                  SizedBox(height: 12,),
-                  ShimmerEffect(width: 80, height: 16),
-                ],
-              ),
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width*0.4038,
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ShimmerEffect(width: 70, height: 12),
+                      SizedBox(height: 12,),
+                      ShimmerEffect(width: 120, height: 22),
+                      SizedBox(height: 12,),
+                      ShimmerEffect(width: 80, height: 16),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(4),
+                  height: MediaQuery.sizeOf(context).height,
+                  width: MediaQuery.sizeOf(context).width*0.25,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ShimmerEffect(width: MediaQuery.sizeOf(context).width*0.25, height: MediaQuery.sizeOf(context).height,radius: 16,),
+                ),
+              ],
             ),
           ]
       ),
