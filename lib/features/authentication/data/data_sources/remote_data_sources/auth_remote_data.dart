@@ -7,7 +7,6 @@ import 'package:spotify/core/utlis/exceptions/t_firebase_auth_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
-import 'package:spotify/features/authentication/sign_in/presentation/views/sign_in_view.dart';
 
 class AuthRemoteData extends GetxController{
   static AuthRemoteData get instance => Get.find();
