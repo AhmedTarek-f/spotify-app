@@ -58,9 +58,14 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   flutter_timezone: ^3.0.1
   rxdart: ^0.28.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
   timezone: any
+  path_provider: any
 dev_dependencies:
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.13
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.14.1"
@@ -100,7 +105,7 @@ flutter:
     - assets/images/logos/
     - assets/images/on_boarding/
     - assets/images/songs_images/
-    - assets/images/my_grad_pic.jpg
+    - assets/images/playlists_background/offline.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:spotify/core/constants/api_keys.dart';
 import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/notifications/local_notifications/local_notifications.dart';
 import 'package:spotify/core/utlis/notifications/push_notifications/push_notifications.dart';
 import 'package:spotify/features/authentication/data/repository/authentication_repository.dart';
+import 'package:spotify/features/offline_songs/data/models/offline_song_model.dart';
 import 'package:spotify/firebase_options.dart';
 import 'package:spotify/spotify_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +20,9 @@ Future<void> main() async{
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await GetStorage.init();
+  await Hive.initFlutter("offlineSongs");
+  Hive.registerAdapter(OfflineSongModelAdapter());
+
   setupServiceLocator();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,).then(
           (FirebaseApp value) => Get.put(AuthenticationRepository())
