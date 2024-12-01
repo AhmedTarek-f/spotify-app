@@ -13,7 +13,7 @@ class DiscoveryFollowsAndFollowersRow extends StatelessWidget {
        Column(
             children: [
               Text((userData.following??0).toString(),style: SpotifyFonts.appStylesBold20),
-              const Text("Follows",style: SpotifyFonts.appStylesRegular14)
+              const Text("Following",style: SpotifyFonts.appStylesRegular14)
             ],
           ),
 
