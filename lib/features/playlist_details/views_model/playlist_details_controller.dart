@@ -1,9 +1,13 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:spotify/core/constants/api_keys.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
+import 'package:spotify/features/offline_songs/data/models/offline_song_model.dart';
+import 'package:spotify/features/offline_songs/presentation/views_model/offline_songs_controller.dart';
 import 'package:spotify/features/playlist_details/data/repository/playlist_details_repository.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
@@ -14,17 +18,21 @@ class PlaylistDetailsController extends GetxController {
   SongsCollectionModel playlist = Get.arguments["playlist"];
   RxBool isSongsLoading = false.obs;
   RxBool isPlaying = false.obs;
+  RxBool isDownloadingProcess = false.obs;
   RxBool isDeletingPlaylist = false.obs;
   RxBool isDeletingSongLoading = false.obs;
   RxBool isCreatedPlaylistPublic = false.obs;
   RxList<SongModel> playlistSongs = <SongModel>[].obs;
   String deletedSongName = "";
+  late final Box<OfflineSongModel> _offlineSongsBox;
+  String downloadingSongId = "";
   late final bool isCreatedPlaylistPublicOrNot;
 
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    await _openHiveSongsBox();
     addToRecentlyPlayedPlaylists(playlist: playlist);
     UpdateRecentlyPlayedTime(playlist: playlist);
     fetchPlaylistSongs(listOfSongs: playlist.listOfSongsIds);
@@ -153,6 +161,58 @@ class PlaylistDetailsController extends GetxController {
 
   bool checkPlaylistCreator() {
     return ("${playlist.collectionTitle}_${playlist.id}" == "${playlist.collectionTitle}_${FirebaseAuth.instance.currentUser?.uid}");
+  }
+
+  Future<void> _openHiveSongsBox() async {
+    _offlineSongsBox = await Hive.openBox<OfflineSongModel>(kSongsBox);
+  }
+
+  Future<void> saveOfflineSong(OfflineSongModel song) async {
+    await _offlineSongsBox.put(song.songId, song);
+  }
+
+  bool checkIfSongDownloaded({required String songId}){
+    return _offlineSongsBox.containsKey(songId);
+  }
+
+  Future<void> downloadAndSaveSong({required SongModel song,}) async {
+    try {
+      downloadingSongId = song.songId;
+      // Download the song from Supabase
+      isDownloadingProcess.value = true;
+      final songLocalFilePath = await _playlistDetailsRepository.downloadSong(song: song);
+      final songImageLocalFilePath = await _playlistDetailsRepository.downloadSongImage(song: song);
+
+      // Create the OfflineSongModel
+      final offlineSong = OfflineSongModel(
+        songId: song.songId,
+        songImage: songImageLocalFilePath,
+        songTitle: song.songTitle,
+        songAuthor: song.songAuthor,
+        songLength: song.songLength,
+        lyrics: song.lyrics,
+        localFilePath: songLocalFilePath,
+      );
+
+      // Save the song in Hive
+      await saveOfflineSong(offlineSong);
+      if(Get.isRegistered<OfflineSongsController>()) OfflineSongsController.instance.songsList.add(SongModel(
+          songId: song.songId,
+          songImage: songImageLocalFilePath,
+          songTitle: song.songTitle,
+          songAuthor: song.songAuthor,
+          songLength: song.songLength,
+          songUrl: songLocalFilePath,
+          lyrics: song.lyrics
+      ));
+      isDownloadingProcess.value = false;
+      downloadingSongId = "";
+
+      Loaders.successSnackBar(title: "Note",message: '${song.songTitle} Song downloaded and saved locally');
+    }
+    catch (e) {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
   }
 
   @override
