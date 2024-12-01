@@ -33,30 +33,41 @@ class AlbumContainer extends StatelessWidget {
           color: SpotifyColors.primaryColor,
         ),
         child: Stack(
-            clipBehavior: Clip.none,
             children:[
-              Positioned(
-                bottom: 0,
-                left: -20,
-                child: CachedNetworkImage(
-                    imageUrl: newAlbum.albumImgUrl,
-                ),
-              ),
               Positioned(
                 top: 0,
                 right: 0,
                 child:  Image.asset(SpotifyImages.homeAlbumSlashes),
               ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width*0.4038,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("New Album",style: SpotifyFonts.appStylesMedium10.copyWith(color: Colors.white),),
-                    Text(newAlbum.albumTitle,style:  SpotifyFonts.appStylesBold19.copyWith(color: Colors.white), maxLines: 2,),
-                    Text(newAlbum.authorName,style:  SpotifyFonts.appStylesMedium13.copyWith(color: Colors.white),),
-                  ],
-                ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width*0.4038,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("New Album",style: SpotifyFonts.appStylesMedium10.copyWith(color: Colors.white),),
+                        Text(newAlbum.albumTitle,style:  SpotifyFonts.appStylesBold19.copyWith(color: Colors.white), maxLines: 2,),
+                        Text(newAlbum.authorName,style:  SpotifyFonts.appStylesMedium13.copyWith(color: Colors.white),),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(4),
+                    height: MediaQuery.sizeOf(context).height,
+                    width: MediaQuery.sizeOf(context).width*0.25,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: CachedNetworkImage(
+                        imageUrl: newAlbum.albumImgUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ]
         ),
