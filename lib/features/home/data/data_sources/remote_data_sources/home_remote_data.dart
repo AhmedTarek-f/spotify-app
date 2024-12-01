@@ -19,7 +19,12 @@ class HomeRemoteData extends GetxController {
   Future<List<SongsCollectionModel>> fetchAllPlaylists() async{
     try{
       final snapshot = await _db.collection("Playlists").get();
-      return snapshot.docs.map((playlist) => SongsCollectionModel.fromSnapshot(playlist)).toList();
+      if(snapshot.docs.isNotEmpty){
+        return snapshot.docs.map((playlist) => SongsCollectionModel.fromSnapshot(playlist)).toList();
+      }
+      else{
+        return <SongsCollectionModel>[];
+      }
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -40,7 +45,12 @@ class HomeRemoteData extends GetxController {
   Future<List<NewAlbumModel>> fetchAllNewAlbums() async{
     try{
       final snapshot = await _db.collection("NewAlbums").get();
-      return snapshot.docs.map((newAlbum) => NewAlbumModel.fromSnapshot(newAlbum)).toList();
+      if(snapshot.docs.isNotEmpty){
+        return snapshot.docs.map((newAlbum) => NewAlbumModel.fromSnapshot(newAlbum)).toList();
+      }
+      else{
+        return <NewAlbumModel>[];
+      }
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -57,9 +67,6 @@ class HomeRemoteData extends GetxController {
       throw "Something went wrong: ${e.toString()}";
     }
   }
-
-
-
 
   Future<void> addToRecentlyPlayedPlaylists({required SongsCollectionModel playlist}) async {
     try{
