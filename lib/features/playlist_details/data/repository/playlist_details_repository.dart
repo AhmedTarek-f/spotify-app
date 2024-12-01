@@ -74,4 +74,22 @@ class PlaylistDetailsRepository extends GetxController{
     }
   }
 
+  Future<String> downloadSong({required SongModel song}) async {
+    try {
+      return await _playlistDetailsRemoteData.downloadSong(song: song);
+    }
+    catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<String> downloadSongImage({required SongModel song}) async {
+    try {
+      return await _playlistDetailsRemoteData.downloadSongImage(song: song);
+    }
+    catch (e) {
+      throw e.toString();
+    }
+  }
+
 }
