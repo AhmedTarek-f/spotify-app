@@ -9,7 +9,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ProfileController());
+    Get.isRegistered<ProfileController>()? ProfileController.instance : Get.put(ProfileController());
     return const Scaffold(
       appBar: ProfileAppBar(),
       body: ProfileViewBody(),
