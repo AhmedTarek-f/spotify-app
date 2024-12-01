@@ -19,11 +19,11 @@ class SongsCollectionShimmer extends StatelessWidget {
         ),
     
         const Padding(
-          padding: EdgeInsets.only(left: 20,top: 4),
+          padding: EdgeInsets.only(left: 12,top: 4),
           child: ShimmerEffect(width: 120, height: 12),
         ),
         const Padding(
-          padding: EdgeInsets.only(left: 20,top: 4),
+          padding: EdgeInsets.only(left: 12,top: 4),
           child: ShimmerEffect(width: 70, height: 12),
         ),
       ],
