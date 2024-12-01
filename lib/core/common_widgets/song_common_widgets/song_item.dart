@@ -4,6 +4,8 @@ import 'package:spotify/core/common_widgets/song_common_widgets/song_item_image.
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
+import 'package:spotify/features/playlist_details/views/widgets/download_song_button.dart';
+import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
 import 'package:spotify/features/song_details/presentation/views/song_details_view.dart';
 
 class SongItem extends StatelessWidget {
@@ -14,12 +16,16 @@ class SongItem extends StatelessWidget {
     this.isThreeDotsWidgetUsed = true,
     required this.playlistSongs,
     required this.index,
+    this.isNetworkImage = true,
+    this.isOffline,
   });
   final SongModel songDetails;
   final Widget? threeDotsWidget;
   final bool isThreeDotsWidgetUsed;
   final List<SongModel> playlistSongs;
   final int index;
+  final bool isNetworkImage;
+  final bool? isOffline;
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -27,7 +33,7 @@ class SongItem extends StatelessWidget {
       onTap: (){
         Get.to(
           () =>  const SongDetailsView(),
-          arguments: {"songDetails":songDetails,"playlistSongs": playlistSongs ,"index":index},
+          arguments: {"songDetails":songDetails,"playlistSongs": playlistSongs ,"index":index, "isOffline":isOffline},
         );
       },
       splashColor: SpotifyColors.primaryColor.withOpacity(0.3),
@@ -47,7 +53,7 @@ class SongItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SongItemImage(image: songDetails.songImage),
+            SongItemImage(image: songDetails.songImage,isNetworkImage: isNetworkImage,),
             const SizedBox(width: 20,),
             Expanded(
               flex: 3,
@@ -62,11 +68,17 @@ class SongItem extends StatelessWidget {
             Expanded(
               flex: isThreeDotsWidgetUsed?2:1,
               child: Row(
-                children: [
-                  Expanded(child: Text(songDetails.songLength,style: SpotifyFonts.appStylesRegular15,)),
-                  if(isThreeDotsWidgetUsed)Expanded(child: threeDotsWidget!),
-                ],
-              ),
+                  children: [
+                    Expanded(child: Text(songDetails.songLength,style: SpotifyFonts.appStylesRegular15,)),
+                    if(Get.isRegistered<PlaylistDetailsController>()) Obx(()=>(PlaylistDetailsController.instance.isDownloadingProcess.value && PlaylistDetailsController.instance.downloadingSongId == songDetails.songId)? Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: DownloadSongButton(song: songDetails,),
+                    ) :Expanded(
+                      child: DownloadSongButton(song: songDetails,),
+                    )) ,
+                    if(isThreeDotsWidgetUsed)Expanded(child: threeDotsWidget!),
+                  ],
+                ),
             )
           ],
         ),
