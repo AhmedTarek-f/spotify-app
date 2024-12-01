@@ -30,7 +30,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-assets/images/my_grad_pic.jpg
 lib/core/constants/api_keys.dart
 lib/core/not_used
 # Symbolication related
