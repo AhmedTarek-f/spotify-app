@@ -7,7 +7,7 @@ class PlaylistsHorizontallyShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height*0.218,
+      height: MediaQuery.sizeOf(context).height*0.23,
       child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
