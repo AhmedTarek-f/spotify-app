@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/discovery/data/model/user_details_with_created_playlists_model.dart';
 import 'package:spotify/features/discovery/data/repository/discovery_repository.dart';
+import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 
 class DiscoveryController extends GetxController {
   static DiscoveryController get instance => Get.find();
@@ -13,19 +15,26 @@ class DiscoveryController extends GetxController {
   RxList<UserModel> registeredUsers = <UserModel>[].obs;
   RxList<UserModel> usersSearchList = <UserModel>[].obs;
   RxList<String> allFollowingList = <String>[].obs;
+  final RxBool isListOfUserPublicPlaylistsLoading = false.obs;
+  final RxBool isRegisteredUsersLoading = false.obs;
+  RxList<UserDetailsWithCreatedPlaylistsModel> listOfUserPublicPlaylists = <UserDetailsWithCreatedPlaylistsModel>[].obs;
+  String followingAndUnfollowingUserId = "";
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
     searchField = TextEditingController();
-    followingIds();
-    fetchAllRegisteredUsers();
+    await followingIds();
+    await fetchAllRegisteredUsers();
+    addingFollowingUsers();
   }
 
   Future<void> fetchAllRegisteredUsers() async{
     try{
+      isRegisteredUsersLoading.value = true;
       final allRegisteredUsers = await _discoveryRepository.fetchAllRegisteredUsers();
       registeredUsers.assignAll(allRegisteredUsers);
+      isRegisteredUsersLoading.value = false;
     }
     catch (e)
     {
@@ -35,10 +44,14 @@ class DiscoveryController extends GetxController {
 
   Future<void> followUser({required String userId}) async {
     try{
+      followingAndUnfollowingUserId = userId;
       isFollowingLoading.value = true;
-      usersSearchList.firstWhere((user) => user.id == userId).followers = await _discoveryRepository.followUser(userId: userId);
+      await _discoveryRepository.followUser(userId: userId);
       allFollowingList.add(userId);
+      await addingFollowingUsers();
+      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getUserData();
       isFollowingLoading.value = false;
+      followingAndUnfollowingUserId = "";
     }
     catch (e)
     {
@@ -48,14 +61,40 @@ class DiscoveryController extends GetxController {
 
   Future<void> unfollowUser({required String userId}) async {
     try{
+      followingAndUnfollowingUserId = userId;
       isUnfollowingLoading.value = true;
-      usersSearchList.firstWhere((user) => user.id == userId).followers = await _discoveryRepository.unfollowUser(userId: userId);
+      await _discoveryRepository.unfollowUser(userId: userId);
       allFollowingList.removeWhere((id)=> id == userId);
+      listOfUserPublicPlaylists.removeWhere((user)=>user.id == userId);
+      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getUserData();
       isUnfollowingLoading.value = false;
+      followingAndUnfollowingUserId= "";
     }
     catch (e)
     {
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
+  Future<void> addingFollowingUsers() async{
+    listOfUserPublicPlaylists.clear();
+    for(String userId in allFollowingList){
+      for(UserModel user in registeredUsers){
+        if(userId == user.id){
+          listOfUserPublicPlaylists.add(UserDetailsWithCreatedPlaylistsModel(
+            id: user.id,
+            userName: user.userName,
+            profileImg: user.profileImg,
+            publicCreatedPlaylists: [],
+          )
+          );
+        }
+      }
+    }
+    for(String userId in allFollowingList){
+     isListOfUserPublicPlaylistsLoading.value = true;
+     await fetchPublicPlaylistsForAFollowingUser(userId: userId);
+     isListOfUserPublicPlaylistsLoading.value = false;
     }
   }
 
@@ -78,6 +117,18 @@ class DiscoveryController extends GetxController {
           usersSearchList.add(registeredUsers[i]);
         }
       }
+    }
+  }
+
+
+  Future<void> fetchPublicPlaylistsForAFollowingUser({required String userId}) async{
+    try{
+      final PublicPlaylists = await _discoveryRepository.fetchPublicPlaylistsForUser(userId: userId);
+      listOfUserPublicPlaylists.firstWhere((user) => user.id == userId)..publicCreatedPlaylists=PublicPlaylists;
+    }
+    catch (e)
+    {
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
 
