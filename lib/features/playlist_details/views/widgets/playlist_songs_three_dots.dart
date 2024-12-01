@@ -11,13 +11,14 @@ class PlaylistSongsThreeDots extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = PlaylistDetailsController.instance;
 
-    return IconButton(
+    return InkWell(
         splashColor: SpotifyColors.primaryColor.withOpacity(0.4),
         highlightColor: SpotifyColors.primaryColor.withOpacity(0.4),
-        onPressed: () async {
+        borderRadius: BorderRadius.circular(50),
+        onTap: () async {
           await controller.deleteSongFromCreatedPlaylist(song: song);
         },
-        icon: Obx(
+        child: Obx(
               ()=> (controller.isDeletingSongLoading.value && controller.deletedSongName == song.songTitle)?
           const SizedBox(width: 16,height: 16,child: CircularProgressIndicator(color: Colors.redAccent,),)  :
           const Icon(Icons.remove,color: Colors.redAccent,size: 32,),

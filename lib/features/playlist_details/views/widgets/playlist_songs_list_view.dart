@@ -18,6 +18,7 @@ class PlaylistSongsListView extends StatelessWidget {
             playlistSongs: controller.playlistSongs,
             index: index,
             threeDotsWidget: PlaylistSongsThreeDots(song: controller.playlistSongs.elementAt(index)),
+            isOffline: false,
           ),
           separatorBuilder: (_, __) => const SizedBox(height: 12,),
           itemCount: controller.playlistSongs.length
