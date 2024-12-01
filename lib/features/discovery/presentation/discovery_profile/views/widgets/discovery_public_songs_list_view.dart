@@ -12,7 +12,13 @@ class DiscoveryPublicSongsListView extends StatelessWidget {
     return Obx(
         ()=> controller.isUserPublicSongsLoading.value? const ListOfSongsShimmer() :ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (_, index) => SongItem(songDetails: controller.publicSongsList.elementAt(index), isThreeDotsWidgetUsed: false, playlistSongs: controller.publicSongsList,index: index,),
+          itemBuilder: (_, index) => SongItem(
+            songDetails: controller.publicSongsList.elementAt(index),
+            isThreeDotsWidgetUsed: false,
+            playlistSongs: controller.publicSongsList,
+            index: index,
+            isOffline: false,
+          ),
           separatorBuilder: (_, __) => const SizedBox(height: 12,),
           itemCount: controller.publicSongsList.length
       ),
