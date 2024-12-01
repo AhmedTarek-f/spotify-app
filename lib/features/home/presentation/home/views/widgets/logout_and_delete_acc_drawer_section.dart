@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/features/authentication/sign_in/presentation/views/sign_in_view.dart';
+import 'package:spotify/features/discovery/presentation/discovery/views_model/discovery_controller.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/default_drawer_item.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
+import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 
 class LogoutAndDeleteAccDrawerSection extends StatelessWidget {
   const LogoutAndDeleteAccDrawerSection({super.key});
@@ -21,6 +23,8 @@ class LogoutAndDeleteAccDrawerSection extends StatelessWidget {
             await controller.logout();
             Get.offAll(()=> const SignInView());
             Get.delete<HomeController>();
+            if(Get.isRegistered<DiscoveryController>()) Get.delete<DiscoveryController>();
+            if(Get.isRegistered<ProfileController>()) Get.delete<ProfileController>();
           },
         ),
         const SizedBox(height: 12,),
