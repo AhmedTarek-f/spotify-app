@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/following_followers_drawer_section.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/logout_and_delete_acc_drawer_section.dart';
+import 'package:spotify/features/home/presentation/home/views/widgets/offline_mode_drawer_section.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/theme_drawer_section.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -21,6 +22,9 @@ class HomeDrawer extends StatelessWidget {
               const FollowingFollowersDrawerSection(),
               const SizedBox(height: 32,),
               const ThemeDrawerSection(),
+              const SizedBox(height: 32,),
+              const OfflineModeDrawerSection(),
+
               Expanded(child: Padding(
                 padding: EdgeInsets.only(right: MediaQuery.sizeOf(context).width*0.04),
                 child: const Divider(),
