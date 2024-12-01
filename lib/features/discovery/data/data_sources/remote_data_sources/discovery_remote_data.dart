@@ -7,6 +7,7 @@ import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/discovery/data/model/followers_following_model.dart';
+import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/song_details/data/models/song_id_model.dart';
 
@@ -37,7 +38,7 @@ class DiscoveryRemoteData extends GetxController{
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong:${e.toString()}";
     }
   }
 
@@ -66,20 +67,24 @@ class DiscoveryRemoteData extends GetxController{
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong:${e.toString()}";
     }
   }
 
-  Future<num> followUser({required String userId}) async {
+  Future<void> followUser({required String userId}) async {
     try{
       final snapshot = await _db.collection("Users").doc(userId).get();
       final userData = UserModel.fromSnapshot(snapshot);
+      final mySnapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).get();
+      final myData = UserModel.fromSnapshot(mySnapshot);
       num userFollowers = userData.followers ?? 0;
+      num myFollowing = myData.following ?? 0;
       await _db.collection("Users").doc(userId).collection("Followers").doc(_auth.currentUser?.uid).set(FollowersFollowingModel(userId: _auth.currentUser!.uid).toJson());
       await _db.collection("Users").doc(_auth.currentUser?.uid).collection("Following").doc(userId).set(FollowersFollowingModel(userId:userId).toJson());
-      final updatingUserFollowersToJson = {"Followers":userFollowers++};
+      final updatingUserFollowersToJson = {"Followers":++userFollowers};
+      final updatingUserFollowingToJson = {"Following":++myFollowing};
       await _db.collection("Users").doc(userId).update(updatingUserFollowersToJson);
-      return userFollowers;
+      await _db.collection("Users").doc(_auth.currentUser?.uid).update(updatingUserFollowingToJson);
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -97,16 +102,20 @@ class DiscoveryRemoteData extends GetxController{
     }
   }
 
-  Future<num> unfollowUser({required String userId}) async {
+  Future<void> unfollowUser({required String userId}) async {
     try{
       final snapshot = await _db.collection("Users").doc(userId).get();
       final userData = UserModel.fromSnapshot(snapshot);
+      final mySnapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).get();
+      final myData = UserModel.fromSnapshot(mySnapshot);
       num userFollowers = userData.followers!;
+      num myFollowing = myData.following!;
       await _db.collection("Users").doc(userId).collection("Followers").doc(_auth.currentUser?.uid).delete();
       await _db.collection("Users").doc(_auth.currentUser?.uid).collection("Following").doc(userId).delete();
-      final updatingUserFollowersToJson = {"Followers":userFollowers--};
+      final updatingUserFollowersToJson = {"Followers":--userFollowers};
+      final updatingUserFollowingToJson = {"Following":--myFollowing};
       await _db.collection("Users").doc(userId).update(updatingUserFollowersToJson);
-      return userFollowers;
+      await _db.collection("Users").doc(_auth.currentUser?.uid).update(updatingUserFollowingToJson);
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -120,7 +129,7 @@ class DiscoveryRemoteData extends GetxController{
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong:${e.toString()}";
     }
   }
 
@@ -148,7 +157,34 @@ class DiscoveryRemoteData extends GetxController{
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong:${e.toString()}";
     }
   }
+
+  Future<List<SongsCollectionModel>> fetchPublicPlaylistsForUser({required String userId}) async{
+    try{
+      final snapshot = await _db.collection("Users").doc(userId).collection("PublicCreatedPlaylists").get();
+      if(snapshot.docs.isNotEmpty){
+        return snapshot.docs.map((playlist) => SongsCollectionModel.fromSnapshot(playlist)).toList();
+      }
+      else{
+        return <SongsCollectionModel>[];
+      }
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong:${e.toString()}";
+    }
+  }
+
 }
