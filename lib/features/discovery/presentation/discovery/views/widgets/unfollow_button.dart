@@ -20,10 +20,10 @@ class UnfollowButton extends StatelessWidget {
             padding:  const EdgeInsets.symmetric(horizontal: 12)
         ),
         onPressed: ()async{
-          controller.unfollowUser(userId: userId);
+         await controller.unfollowUser(userId: userId);
         },
         child:Obx(
-          ()=> controller.isUnfollowingLoading.value? const Center(child: SizedBox(width: 16,height: 16, child: CircularProgressIndicator(color: Colors.white,))) :Row(
+          ()=> (controller.isUnfollowingLoading.value && controller.followingAndUnfollowingUserId == userId)? const Center(child: SizedBox(width: 16,height: 16, child: CircularProgressIndicator(color: Colors.white,))) :Row(
             children: [
               const Icon(Icons.remove,color: Colors.redAccent,),
               const SizedBox(width: 4,),

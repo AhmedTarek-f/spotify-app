@@ -20,10 +20,10 @@ class FollowButton extends StatelessWidget {
             padding:  const EdgeInsets.symmetric(horizontal: 12)
         ),
         onPressed: ()async{
-          controller.followUser(userId: userId);
+          await controller.followUser(userId: userId);
         },
         child:Obx(
-          ()=>controller.isFollowingLoading.value? const Center(child: SizedBox(width: 16,height: 16, child: CircularProgressIndicator(color: Colors.white,))): Row(
+          ()=>(controller.isFollowingLoading.value && controller.followingAndUnfollowingUserId == userId)? const Center(child: SizedBox(width: 16,height: 16, child: CircularProgressIndicator(color: Colors.white,))): Row(
             children: [
               const Icon(Icons.add,color: Colors.white,),
               const SizedBox(width: 4,),
