@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
 import 'package:spotify/features/discovery/data/data_sources/remote_data_sources/discovery_remote_data.dart';
+import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
 class DiscoveryRepository extends GetxController {
@@ -27,10 +28,9 @@ class DiscoveryRepository extends GetxController {
     }
   }
 
-  Future<num> followUser({required String userId}) async {
+  Future<void> followUser({required String userId}) async {
     try{
-      return await _discoveryRemoteData.followUser(userId: userId);
-
+       await _discoveryRemoteData.followUser(userId: userId);
     }
     catch (e)
     {
@@ -38,10 +38,9 @@ class DiscoveryRepository extends GetxController {
     }
   }
 
-  Future<num> unfollowUser({required String userId}) async {
+  Future<void> unfollowUser({required String userId}) async {
     try{
-      return await _discoveryRemoteData.unfollowUser(userId: userId);
-
+       await _discoveryRemoteData.unfollowUser(userId: userId);
     }
     catch (e)
     {
@@ -58,5 +57,16 @@ class DiscoveryRepository extends GetxController {
       throw e.toString();
     }
   }
+
+  Future<List<SongsCollectionModel>> fetchPublicPlaylistsForUser({required String userId}) async{
+    try{
+      return await _discoveryRemoteData.fetchPublicPlaylistsForUser(userId: userId);
+    }
+    catch (e)
+    {
+      throw e.toString();
+    }
+  }
+
 
 }
