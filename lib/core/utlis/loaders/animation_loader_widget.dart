@@ -9,7 +9,8 @@ class AnimationLoaderWidget extends StatelessWidget {
     required this.animation,
     this.showAction =false,
     this.actionText,
-    this.onActionPressed
+    this.onActionPressed,
+    this.style
   });
 
   final String text;
@@ -17,6 +18,7 @@ class AnimationLoaderWidget extends StatelessWidget {
   final bool showAction;
   final String? actionText;
   final VoidCallback? onActionPressed;
+  final TextStyle? style;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -27,7 +29,7 @@ class AnimationLoaderWidget extends StatelessWidget {
           const SizedBox(height: 24,),
           Text(
             text,
-            style: SpotifyFonts.appStylesMedium16,
+            style: style ?? SpotifyFonts.appStylesMedium16,
             textAlign: TextAlign.center,
             overflow: TextOverflow.visible,
           ),
