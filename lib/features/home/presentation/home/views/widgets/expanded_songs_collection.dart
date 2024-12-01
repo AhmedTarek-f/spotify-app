@@ -36,9 +36,9 @@ class ExpandedSongsCollectionContainer extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20,top: 4),
-          child: Text(songsCollection.collectionTitle, style: SpotifyFonts.appStylesBold13,),
-        )
+          padding: const EdgeInsets.only(left: 12,top: 4),
+          child: SizedBox(width: MediaQuery.sizeOf(context).width*0.28, child: Text(songsCollection.collectionTitle, style: SpotifyFonts.appStylesBold13,)),
+        ),
       ],
     );
   }
