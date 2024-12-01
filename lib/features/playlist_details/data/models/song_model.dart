@@ -8,7 +8,9 @@ class SongModel {
     required this.songAuthor,
     required this.songLength,
     required this.songUrl,
-    required this.lyrics
+    required this.lyrics,
+    this.songBaseName,
+    this.songBaseImage
   });
 
   final String songId;
@@ -18,8 +20,10 @@ class SongModel {
   final String songLength;
   final String songUrl;
   final String lyrics;
+  final String? songBaseName;
+  final String? songBaseImage;
 
-  static SongModel empty() => const SongModel(songId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "", lyrics: '');
+  static SongModel empty() => const SongModel(songId: "", songImage: "", songTitle: "", songAuthor: "", songLength: "", songUrl: "", lyrics: '',songBaseName: "",songBaseImage: "");
 
   Map<String,dynamic> toJson() {
     return {
@@ -29,6 +33,8 @@ class SongModel {
       "SongLength":songLength,
       "SongUrl":songUrl,
       "Lyrics":lyrics,
+      "SongBaseName":songBaseName,
+      "SongBaseImage":songBaseImage,
     };
   }
 
@@ -43,6 +49,8 @@ class SongModel {
           songLength:snapshot["SongLength"] as String,
           songUrl:snapshot["SongUrl"] as String,
           lyrics:snapshot["Lyrics"] as String,
+        songBaseName: snapshot["SongBaseName"] as String?,
+        songBaseImage: snapshot["SongBaseImage"] as String?,
       );
     }
     else{
