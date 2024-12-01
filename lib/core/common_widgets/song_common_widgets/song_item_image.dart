@@ -1,14 +1,16 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SongItemImage extends StatelessWidget {
   const SongItemImage({
     super.key,
-    required this.image,
+    required this.image, required this.isNetworkImage,
   });
 
   final String image;
-
+  final bool isNetworkImage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,10 +21,10 @@ class SongItemImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(14),
-        child:CachedNetworkImage(
+        child:isNetworkImage? CachedNetworkImage(
             imageUrl: image,
-            fit: BoxFit.contain,
-        )
+            fit: BoxFit.cover,
+        ):Image.file(File(image),fit: BoxFit.cover,)
       ),
     );
   }
