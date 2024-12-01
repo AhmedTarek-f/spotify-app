@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/shimmer/new_album_shimmer.dart';
@@ -14,7 +13,6 @@ class NewAlbumsListView extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height*0.1398,
       child: Obx(
         ()=> controller.isNewAlbumsLoading.value? const NewAlbumShimmer():ListView.separated(
-          clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, index) => AlbumContainer(newAlbum: controller.newAlbums.elementAt(index),),
           separatorBuilder: (_, __) => const SizedBox(width: 12,),
