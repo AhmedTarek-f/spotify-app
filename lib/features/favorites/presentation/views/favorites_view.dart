@@ -8,7 +8,7 @@ class FavoritesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(FavoritesController());
+    Get.isRegistered<FavoritesController>()? FavoritesController.instance :Get.put(FavoritesController());
     return  const Scaffold(
       body: SafeArea(child: FavoritesViewBody()),
     );
