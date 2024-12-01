@@ -36,11 +36,11 @@ class SongsCollectionContainer extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20,top: 4),
-          child: Text(songsCollection.collectionTitle, style: SpotifyFonts.appStylesBold13,),
+          padding: const EdgeInsets.only(left: 12,top: 4),
+          child: SizedBox(width: MediaQuery.sizeOf(context).width*0.28, child: Text(songsCollection.collectionTitle, style: SpotifyFonts.appStylesBold13,)),
         ),
        if((songsCollection.createdBy?.isNotEmpty?? false) && songsCollection.createdBy?.trim() !="") Padding(
-          padding: const EdgeInsets.only(left: 20,top: 4),
+          padding: const EdgeInsets.only(left: 12,top: 4),
           child: SizedBox(width: MediaQuery.sizeOf(context).width*0.28, child: Text("Created by: ${songsCollection.createdBy!}", style: SpotifyFonts.appStylesMedium8,)),
         ),
       ],
