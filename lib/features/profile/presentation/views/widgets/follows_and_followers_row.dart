@@ -18,7 +18,7 @@ class FollowsAndFollowersRow extends StatelessWidget {
             children: [
               profileController.isLoading.value?
               const ShimmerEffect(width: 20, height: 12):Text((profileController.userData.value.following??0).toString(),style: SpotifyFonts.appStylesBold20),
-              const Text("Follows",style: SpotifyFonts.appStylesRegular14)
+              const Text("Following",style: SpotifyFonts.appStylesRegular14)
             ],
           ),
         ),
