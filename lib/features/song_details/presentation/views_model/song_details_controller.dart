@@ -5,6 +5,7 @@ import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/favorites/presentation/views_model/favorites_controller.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
+import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
 import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 import 'package:spotify/features/song_details/data/repository/song_details_repository.dart';
 
@@ -19,117 +20,38 @@ class SongDetailsController extends GetxController {
   Rx<AudioPlayer> player = getIt.get<AudioPlayer>().obs;
   List<SongModel> playlistSongs = Get.arguments["playlistSongs"];
   final _songDetailsRepository = Get.put(SongDetailsRepository());
-  final _favoritesController = Get.put(FavoritesController());
-  final _profileController = Get.put(ProfileController());
+  final _favoritesController = Get.isRegistered<FavoritesController>()? FavoritesController.instance :Get.put(FavoritesController());
+  final _profileController = Get.isRegistered<ProfileController>()? ProfileController.instance : Get.put(ProfileController());
   Rx<Duration> position = Duration.zero.obs;
   Rx<Duration> duration = Duration.zero.obs;
-  final int index = Get.arguments["index"];
+  int index = Get.arguments["index"];
+
   RxInt currentSongIndex = 0.obs;
 
   SongModel get currentSong => playlistSongs[currentSongIndex.value];
 
   @override
-  void onInit() {
+  void onInit() async{
+    final bool? isOfflineMode = Get.arguments["isOffline"];
     super.onInit();
     currentSongIndex.value = index;
-    fetchIfFavoriteSongs(songId: currentSong.songId);
-    fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-    fetchSong(songUrl: currentSong.songUrl);
+    if( isOfflineMode == false) fetchIfFavoriteSongs(songId: currentSong.songId);
+    if( isOfflineMode == false) fetchIfPublicFavoriteSongs(songId: currentSong.songId);
+    await fetchAllSongsOneByOne(songIndex: currentSongIndex.value);
   }
-  void toggleRepeat() {
+  Future<void> toggleRepeat() async{
     isRepeating.value = !isRepeating.value;
+    if(isRepeating.value)  await player.value.setLoopMode(LoopMode.one);
+    if(!isRepeating.value)  await player.value.setLoopMode(LoopMode.off);
   }
-  void toggleShuffle(){
+  Future<void> toggleShuffle() async{
     isShuffling.value = !isShuffling.value;
+    if(isShuffling.value) await player.value.setShuffleModeEnabled(true);
+    if(!isShuffling.value) await player.value.setShuffleModeEnabled(false);
   }
   void toggleShowLyrics(){
     isShowingLyrics.value = !isShowingLyrics.value;
   }
-
-  String formatDuration(Duration d){
-    final minutes = d.inMinutes.remainder(60);
-    final seconds = d.inSeconds.remainder(60);
-    return "${minutes.toString().padLeft(2,'0')}:${seconds.toString().padLeft(2,'0')}";
-  }
-
-  Future<void> handlePlayAndPause() async{
-    if(player.value.playing){
-      isPlaying.value=false;
-      await player.value.pause();
-    }
-    else{
-      isPlaying.value = true;
-      await player.value.play();
-    }
-  }
-
-  void handleSeek(double value){
-    player.value.seek(Duration(seconds: value.toInt()));
-  }
-
-  Future<void> fetchSong({required String songUrl}) async {
-    await player.value.setUrl(songUrl);
-
-    // Listen to position and duration streams
-    player.value.positionStream.listen((p) {
-      position.value = p;
-    });
-    player.value.durationStream.listen((d) {
-      duration.value = d!;
-    });
-
-    // Listen to player state stream for handling song completion
-    player.value.playerStateStream.listen((state) async {
-      if (state.processingState == ProcessingState.completed) {
-        // Check if repeating is enabled
-        if (isRepeating.value) {
-          player.value.seek(Duration.zero);
-          await player.value.play();
-        }
-        else if(isShuffling.value){
-            playlistSongs.shuffle(Random());
-
-            currentSongIndex.value = 0;
-
-            isPlaying.value = false;
-            await  player.value.setUrl(currentSong.songUrl);
-            await fetchIfFavoriteSongs(songId: currentSong.songId);
-            await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-            await player.value.play();
-            isPlaying.value = true;
-        }
-        else {
-          // Move to the next song or loop back to the first song
-          if (currentSongIndex.value < (playlistSongs.length - 1)) {
-            currentSongIndex.value++;
-            await  player.value.setUrl(currentSong.songUrl);
-            await player.value.play();
-            isPlaying.value = true;
-            await fetchIfFavoriteSongs(songId: currentSong.songId);
-            await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-          } else {
-            // Loop back to the first song
-            if(currentSongIndex.value != 0)
-              {
-                currentSongIndex.value = 0;
-                await  player.value.setUrl(currentSong.songUrl);
-                await player.value.pause();
-                isPlaying.value = false;
-                await fetchIfFavoriteSongs(songId: currentSong.songId);
-                await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-              }
-            else {
-              player.value.seek(Duration.zero);
-              await player.value.pause();
-              isPlaying.value = false;
-            }
-          }
-
-        }
-      }
-    });
-  }
-
   Future<void> addToYourFavoriteSongs({required String songId}) async {
     try{
       await _songDetailsRepository.addToYourFavoriteSongs(songId: songId);
@@ -218,15 +140,64 @@ class SongDetailsController extends GetxController {
     await deleteFromYourPublicFavoriteSongs(songId:currentSong.songId);
   }
 
-  Future<void> playPreviousSong() async {
-    if (currentSongIndex.value > 0) {
-      currentSongIndex.value--;
-      isPlaying.value = false;
-      await  player.value.setUrl(currentSong.songUrl);
-      await fetchIfFavoriteSongs(songId: currentSong.songId);
-      await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-      await player.value.play();
+  String formatDuration(Duration d){
+    final minutes = d.inMinutes.remainder(60);
+    final seconds = d.inSeconds.remainder(60);
+    return "${minutes.toString().padLeft(2,'0')}:${seconds.toString().padLeft(2,'0')}";
+  }
+
+  Future<void> handlePlayAndPause() async{
+    if(player.value.playing){
+      isPlaying.value=false;
+      await player.value.pause();
+    }
+    else{
       isPlaying.value = true;
+      await player.value.play();
+    }
+  }
+
+  void handleSeek(double value){
+    player.value.seek(Duration(seconds: value.toInt()));
+  }
+
+  Future<void> fetchAllSongsOneByOne({required int songIndex}) async {
+
+    final bool? isOfflineMode = Get.arguments["isOffline"];
+    currentSongIndex.value = songIndex;
+    final playlist = ConcatenatingAudioSource(
+      // Start loading next item just before reaching it
+      useLazyPreparation: true,
+      // Customise the shuffle algorithm
+      shuffleOrder: DefaultShuffleOrder(),
+      // Specify the playlist items
+      children: playlistSongs.map((song) => isOfflineMode!?AudioSource.file(song.songUrl) :AudioSource.uri(Uri.parse(song.songUrl))).toList(),
+    );
+    // Load and play the playlist
+    await player.value.setAudioSource(playlist, initialIndex: songIndex, initialPosition: Duration.zero);
+    player.value.positionStream.listen((p) {
+      position.value = p;
+    });
+    player.value.durationStream.listen((d) {
+      duration.value = d!;
+    });
+    currentSongIndex.value = player.value.currentIndex!;
+    isPlaying.value = true;
+    if(isOfflineMode == false) if(Get.isRegistered<PlaylistDetailsController>()) PlaylistDetailsController.instance.isPlaying.value = true;
+    await player.value.play();
+    // await player.value.seek(Duration.zero, index: 2);    // Skip to the start of track3.mp3
+    // await player.value.setLoopMode(LoopMode.all);        // Set playlist to loop (off|all|one)
+    // await player.value.setShuffleModeEnabled(true);      // Shuffle playlist order (true|false)
+
+  }
+
+  Future<void> playPreviousSong() async {
+    if(player.value.currentIndex!>0){
+      final bool? isOfflineMode = Get.arguments["isOffline"];
+      await player.value.seekToPrevious();
+      currentSongIndex.value = player.value.currentIndex ??0;
+      if( isOfflineMode == false) await fetchIfFavoriteSongs(songId: currentSong.songId);
+      if( isOfflineMode == false) await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
     }
     else{
       Loaders.warningSnackBar(title: "Alert!",message: "No previous songs are available.");
@@ -234,23 +205,21 @@ class SongDetailsController extends GetxController {
   }
 
   Future<void> playNextSong() async {
-    if (currentSongIndex.value < (playlistSongs.length-1)) {
-        currentSongIndex.value++;
-        isPlaying.value = false;
-        await  player.value.setUrl(currentSong.songUrl);
-        await fetchIfFavoriteSongs(songId: currentSong.songId);
-        await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
-        await player.value.play();
-        isPlaying.value = true;
+    if(player.value.currentIndex! < playlistSongs.length-1){
+      final bool? isOfflineMode = Get.arguments["isOffline"];
+      await player.value.seekToNext();
+      currentSongIndex.value = player.value.currentIndex ??0;
+      if( isOfflineMode == false) await fetchIfFavoriteSongs(songId: currentSong.songId);
+      if( isOfflineMode == false) await fetchIfPublicFavoriteSongs(songId: currentSong.songId);
     }
     else{
       Loaders.warningSnackBar(title: "Alert!",message: "You have already reached the last song in this playlist");
-
     }
   }
 
   @override
   void onClose() {
+    currentSongIndex.value=0;
     if(isFavorite.value == false && _favoritesController.favoriteSongsList.any((song)=>song.songId == currentSong.songId)){
       _favoritesController.favoriteSongsList.removeWhere((song)=> song.songId == currentSong.songId);
     }
