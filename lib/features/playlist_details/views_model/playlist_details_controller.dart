@@ -1,8 +1,12 @@
 
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:spotify/core/constants/api_keys.dart';
+import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
@@ -27,7 +31,8 @@ class PlaylistDetailsController extends GetxController {
   late final Box<OfflineSongModel> _offlineSongsBox;
   String downloadingSongId = "";
   late final bool isCreatedPlaylistPublicOrNot;
-
+  Rx<AudioPlayer> player = getIt.get<AudioPlayer>().obs;
+  RxBool isShuffling = false.obs;
 
   @override
   void onInit() async{
@@ -215,10 +220,46 @@ class PlaylistDetailsController extends GetxController {
     }
   }
 
+  Future<void> toggleIsPlaying() async{
+    isPlaying.value = !isPlaying.value;
+    if(isPlaying.value) await fetchAllSongsOneByOne();
+    if(!isPlaying.value) await player.value.pause();
+  }
+
+  Future<void> toggleShuffle() async{
+    isShuffling.value = !isShuffling.value;
+    if(isShuffling.value) await player.value.setShuffleModeEnabled(true);
+    if(!isShuffling.value) await player.value.setShuffleModeEnabled(false);
+  }
+
+
+  Future<void> fetchAllSongsOneByOne() async {
+      final playlist = ConcatenatingAudioSource(
+
+        // Start loading next item just before reaching it
+        useLazyPreparation: true,
+
+        // Customise the shuffle algorithm
+        shuffleOrder: DefaultShuffleOrder(),
+
+        children: playlistSongs.map((song) => AudioSource.uri(Uri.parse(song.songUrl))).toList(),
+      );
+
+      // Load and play the playlist
+      await player.value.setAudioSource(
+        playlist,
+        initialIndex: player.value.currentIndex,
+        initialPosition: Duration.zero,
+      );
+
+      await player.value.play();
+  }
+
   @override
   void onClose() {
     movingPlaylistToTop();
     if((playlist.createdBy?.isNotEmpty ?? false) && playlist.createdBy != null) checkIfAddOrDeletedFromPublic();
+    player.value.stop();
     super.onClose();
   }
 }
