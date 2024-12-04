@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
+import 'package:spotify/features/favorites/presentation/views_model/favorites_controller.dart';
+import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
+import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 import 'package:spotify/features/song_details/presentation/views_model/song_details_controller.dart';
 
 class AddOrRemoveFromFavButton extends StatelessWidget {
   const AddOrRemoveFromFavButton({
-    super.key,
+    super.key, this.playlistDetailsController, this.favoritesController, this.profileController,
   });
-
+  final PlaylistDetailsController? playlistDetailsController;
+  final FavoritesController? favoritesController;
+  final ProfileController? profileController;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class AddOrRemoveFromFavButton extends StatelessWidget {
     return Obx(
           ()=> IconButton(
           onPressed: () async{
-            await controller.addOrRemoveFavoriteSong(songId: controller.currentSong.songId);
+            await controller.addOrRemoveFavoriteSong(songId:playlistDetailsController!=null? playlistDetailsController!.currentSong.value.songId : favoritesController!=null? favoritesController!.currentSong.value.songId : profileController!.currentSong.value.songId);
           },
           icon:controller.isFavorite.value?SvgPicture.asset(SpotifyImages.loveIcon,width: 24,height: 24,colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),):SvgPicture.asset(SpotifyImages.heartIcon,width: 24,height: 24,)),
     );

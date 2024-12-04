@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/back_arrow.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/add_and_remove_from_fav_public.dart';
@@ -10,6 +11,7 @@ class SongDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool? isOfflineMode = Get.arguments["isOffline"];
     return AppBar(
       leadingWidth: 65,
       leading: Padding(
@@ -19,9 +21,9 @@ class SongDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       centerTitle: true,
       title: const Text("Now playing",style: SpotifyFonts.appStylesBold18,),
-      actions: const [
+      actions: (isOfflineMode == false)? const [
         AddAndRemoveFromFavPublic(),
-      ],
+      ] : null,
     );
   }
 
