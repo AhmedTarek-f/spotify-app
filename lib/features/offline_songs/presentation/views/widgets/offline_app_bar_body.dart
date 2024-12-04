@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/song_common_widgets/songs_play_icon.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
@@ -49,15 +50,29 @@ class OfflineAppBarBody extends StatelessWidget implements PreferredSizeWidget{
           children: [
             SizedBox(width: MediaQuery.sizeOf(context).width*0.16,),
             SongsPlayIcon(
-              onPressed: (){},
-              icon: Icon(
-                controller.isPlaying.value? Icons.pause :Icons.play_arrow,
-                size: 28,
-                color: isDarkMode?Colors.white:Colors.black,
+              onPressed: ()async{
+                await controller.toggleIsPlaying();
+              },
+              icon: Obx(
+              ()=> Icon(
+                  controller.isPlaying.value? Icons.pause :Icons.play_arrow,
+                  size: 28,
+                  color: isDarkMode?Colors.white:Colors.black,
+                ),
               ),
             ),
             const SizedBox(width: 12,),
-            IconButton(onPressed: (){}, icon: SvgPicture.asset(SpotifyImages.shuffleIcon,colorFilter: ColorFilter.mode(isDarkMode?Colors.white:Colors.black, BlendMode.srcIn),)),
+            IconButton(
+                onPressed: ()async{
+                  await controller.toggleShuffle();
+                },
+                icon: Obx(
+                      ()=> SvgPicture.asset(SpotifyImages.shuffleIcon,colorFilter: ColorFilter.mode(
+                      controller.isShuffling.value? SpotifyColors.primaryColor:(isDarkMode?const Color(0xff6D6D6D) :const Color(0xff7E7E7E)), BlendMode.srcIn
+                  ),
+                  ),
+                )
+            ),
           ],
         ),
 

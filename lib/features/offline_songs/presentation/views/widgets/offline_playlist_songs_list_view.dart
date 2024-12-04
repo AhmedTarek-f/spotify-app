@@ -18,19 +18,22 @@ class OfflinePlaylistSongsListView extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child:AnimationLoaderWidget(text: "You haven't downloaded any songs yet!", animation: SpotifyImages.offlineModeEmptyAnimation,style: SpotifyFonts.appStylesBold18,)
       ) :ListView.separated(
-          itemBuilder: (_, index) {
-            return SongItem(
-              songDetails: controller.songsList.elementAt(index),
-              playlistSongs: controller.songsList,
-              index: index,
-              threeDotsWidget: OfflinePlaylistSongsAction(song: controller.songsList.elementAt(index)),
-              isNetworkImage: false,
-              isOffline: true,
-            );
-          },
-          separatorBuilder: (_, __) => const SizedBox(height: 12,),
-          itemCount: controller.songsList.length
-      )
+            itemBuilder: (_, index) {
+              return Obx(
+                  ()=> SongItem(
+                  songDetails: controller.songsList.elementAt(index),
+                  playlistSongs: controller.songsList,
+                  index: index,
+                  threeDotsWidget: OfflinePlaylistSongsAction(song: controller.songsList.elementAt(index)),
+                  isNetworkImage: false,
+                  isOffline: true,
+                  isPlaying:(controller.isPlaying.value && controller.currentSongIndex.value == index),
+                ),
+              );
+            },
+            separatorBuilder: (_, __) => const SizedBox(height: 12,),
+            itemCount: controller.songsList.length
+        ),
     );
   }
 }

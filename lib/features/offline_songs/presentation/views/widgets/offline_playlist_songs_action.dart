@@ -15,6 +15,10 @@ class OfflinePlaylistSongsAction extends StatelessWidget {
         highlightColor: SpotifyColors.primaryColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(50),
         onTap: () async {
+          if(controller.currentSong.value.songId == song.songId){
+            controller.isPlaying.value = false;
+            await controller.player.value.stop();
+          }
           await controller.deleteSong(songId: song.songId);
         },
         child: const Icon(Icons.remove,color: Colors.redAccent,size: 32,),
