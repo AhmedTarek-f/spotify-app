@@ -19,7 +19,7 @@ class FavoritesAppBarBody extends StatelessWidget implements PreferredSizeWidget
         SizedBox(width: MediaQuery.sizeOf(context).width*0.16,),
         SongsPlayIcon(
           onPressed: ()async{
-            await controller.toggleIsPlaying();
+            await controller.toggleFavIsPlaying();
           },
           icon: Obx(
                 ()=> Icon(
