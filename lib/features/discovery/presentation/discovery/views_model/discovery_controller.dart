@@ -49,7 +49,7 @@ class DiscoveryController extends GetxController {
       await _discoveryRepository.followUser(userId: userId);
       allFollowingList.add(userId);
       await addingFollowingUsers();
-      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getUserData();
+      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getFollowingFollowersData();
       isFollowingLoading.value = false;
       followingAndUnfollowingUserId = "";
     }
@@ -66,7 +66,7 @@ class DiscoveryController extends GetxController {
       await _discoveryRepository.unfollowUser(userId: userId);
       allFollowingList.removeWhere((id)=> id == userId);
       listOfUserPublicPlaylists.removeWhere((user)=>user.id == userId);
-      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getUserData();
+      if(Get.isRegistered<ProfileController>()) ProfileController.instance.getFollowingFollowersData();
       isUnfollowingLoading.value = false;
       followingAndUnfollowingUserId= "";
     }

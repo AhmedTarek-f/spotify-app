@@ -5,6 +5,7 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/discovery/data/model/user_details_with_created_playlists_model.dart';
 import 'package:spotify/features/discovery/presentation/discovery/views/widgets/follow_button.dart';
 import 'package:spotify/features/discovery/presentation/discovery/views/widgets/unfollow_button.dart';
 import 'package:spotify/features/discovery/presentation/discovery/views_model/discovery_controller.dart';
@@ -20,7 +21,7 @@ class HorizontallyUserDataRow extends StatelessWidget {
     return InkWell(
       onTap: (){
         Get.to(
-          ()=> DiscoveryProfileView(userData: userData),
+          ()=> DiscoveryProfileView(userData: UserDetailsWithCreatedPlaylistsModel(profileImg:userData.profileImg ,id:userData.id ,userName:userData.userName )),
           arguments: {"userId":userData.id}
         );
         },
