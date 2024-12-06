@@ -15,14 +15,18 @@ class FavoriteSongsListView extends StatelessWidget {
       () => controller.isFavoriteSongsLoading.value?
       const ListOfSongsShimmer():
       ListView.separated(
-          itemBuilder: (_, index) => SongItem(
-            songDetails: controller.favoriteSongsList.elementAt(index),
-            threeDotsWidget: FavoriteSongThreeDots(songItem: controller.favoriteSongsList.elementAt(index),),
-            playlistSongs: controller.favoriteSongsList,
-            index: index,
-            isOffline: false,
+        physics: const BouncingScrollPhysics(),
+          itemBuilder: (_, index) => Obx(
+              ()=> SongItem(
+              songDetails: controller.favoriteSongsList.elementAt(index),
+              threeDotsWidget: FavoriteSongThreeDots(songItem: controller.favoriteSongsList.elementAt(index),),
+              playlistSongs: controller.favoriteSongsList,
+              index: index,
+              isOffline: false,
+              isPlaying:(controller.isPlaying.value && controller.currentSongIndex.value == index)
+            ),
           ),
-          separatorBuilder: (_, __) => const SizedBox(height: 12,),
+          separatorBuilder: (_, __) => const SizedBox(height: 16,),
           itemCount: controller.favoriteSongsList.length
       ),
     );
