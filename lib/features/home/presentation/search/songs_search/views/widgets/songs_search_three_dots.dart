@@ -6,12 +6,12 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
-import 'package:spotify/features/home/presentation/home_search/views/widgets/songs_collection_row_list_view.dart';
-import 'package:spotify/features/home/presentation/home_search/views_model/home_search_controller.dart';
+import 'package:spotify/features/home/presentation/search/views/songs_search/widgets/songs_collection_row_list_view.dart';
+import 'package:spotify/features/home/presentation/search/views_model/search_controller.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
-class HomeSearchSongThreeDots extends StatelessWidget {
-  const HomeSearchSongThreeDots({super.key, required this.song,});
+class SongsSearchThreeDots extends StatelessWidget {
+  const SongsSearchThreeDots({super.key, required this.song,});
   final SongModel song;
   @override
   Widget build(BuildContext context) {

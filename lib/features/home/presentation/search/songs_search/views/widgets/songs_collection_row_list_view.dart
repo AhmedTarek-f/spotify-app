@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
-import 'package:spotify/features/home/presentation/home_search/views/widgets/song_collection_row_item.dart';
+import 'package:spotify/features/home/presentation/search/views/songs_search/widgets/song_collection_row_item.dart';
 
 class SongsCollectionRowListView extends StatelessWidget {
   const SongsCollectionRowListView({super.key, required this.createdPlaylists});

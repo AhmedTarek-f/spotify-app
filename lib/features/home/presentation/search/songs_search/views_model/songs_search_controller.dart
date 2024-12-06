@@ -7,25 +7,30 @@ import 'package:spotify/features/home/presentation/home/views_model/home_control
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
 
-class HomeSearchController extends GetxController
+class SongsSearchController extends GetxController
 {
-  static HomeSearchController get instance => Get.find();
+  static SongsSearchController get instance => Get.find();
 
-  late final TextEditingController searchField;
+  late final TextEditingController songsSearchField;
+  late final TextEditingController playlistsSearchField;
   final _homeRepo = HomeRepository.instance;
   final _homeController = HomeController.instance;
   final RxBool isSongsLoading = false.obs;
   final RxBool isAddingSongLoading = false.obs;
   RxList<SongModel> allSongsList = <SongModel>[].obs;
   RxList<SongModel> songsSearchList = <SongModel>[].obs;
+  RxList<SongsCollectionModel> allPlaylists = <SongsCollectionModel>[].obs;
+  RxList<SongsCollectionModel> playlistsSearchList = <SongsCollectionModel>[].obs;
   final RxInt activeSelectedSong = 0.obs;
 
 
   @override
   void onInit() {
     super.onInit();
-    searchField = TextEditingController();
+    songsSearchField = TextEditingController();
+    playlistsSearchField = TextEditingController();
     fetchSongs();
+    assignAllPlaylists();
   }
 
   Future<void> fetchSongs() async {
@@ -40,12 +45,27 @@ class HomeSearchController extends GetxController
     }
   }
 
+  void assignAllPlaylists(){
+    allPlaylists.assignAll(_homeController.songsPlaylists);
+  }
+
   void searchForASong({required String songName}){
-    searchField.text = songName;
+    songsSearchField.text = songName;
     if(allSongsList.isNotEmpty){
       for(int i=0 ; i<allSongsList.length;i++){
-        if(allSongsList[i].songTitle.toLowerCase().contains(searchField.text.toLowerCase())){
+        if(allSongsList[i].songTitle.toLowerCase().contains(songsSearchField.text.toLowerCase())){
           songsSearchList.add(allSongsList[i]);
+        }
+      }
+    }
+  }
+
+  void searchForAPlaylist({required String playlistName}){
+    playlistsSearchField.text = playlistName;
+    if(allPlaylists.isNotEmpty){
+      for(int i=0 ; i<allPlaylists.length;i++){
+        if(allPlaylists[i].collectionTitle.toLowerCase().contains(playlistsSearchField.text.toLowerCase())){
+          playlistsSearchList.add(allPlaylists[i]);
         }
       }
     }
@@ -90,9 +110,11 @@ class HomeSearchController extends GetxController
     return _homeController.yourCreatedPlaylists;
   }
 
+
   @override
   void onClose() {
-    searchField.dispose();
+    songsSearchField.dispose();
+    playlistsSearchField.dispose();
     super.onClose();
   }
 }

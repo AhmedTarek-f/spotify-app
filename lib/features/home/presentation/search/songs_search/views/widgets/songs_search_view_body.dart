@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/loaders/animation_loader_widget.dart';
-import 'package:spotify/features/home/presentation/home_search/views/widgets/songs_search_field.dart';
-import 'package:spotify/features/home/presentation/home_search/views/widgets/songs_search_list.dart';
-import 'package:spotify/features/home/presentation/home_search/views_model/home_search_controller.dart';
+import 'package:spotify/features/home/presentation/search/views/songs_search/widgets/songs_search_field.dart';
+import 'package:spotify/features/home/presentation/search/views/songs_search/widgets/songs_search_list.dart';
+import 'package:spotify/features/home/presentation/search/views_model/search_controller.dart';
 
-class HomeSearchViewBody extends StatelessWidget {
-  const HomeSearchViewBody({super.key});
+class SongsSearchViewBody extends StatelessWidget {
+  const SongsSearchViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
-import 'package:spotify/features/home/presentation/home_search/views_model/home_search_controller.dart';
+import 'package:spotify/features/home/presentation/search/views_model/search_controller.dart';
 
 class SongCollectionRowItem extends StatelessWidget {
   const SongCollectionRowItem({super.key, required this.playlist, required this.index,});

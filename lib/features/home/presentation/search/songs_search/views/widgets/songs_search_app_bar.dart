@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/core/common_widgets/back_arrow.dart';
 
-class HomeSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeSearchAppBar({
+class SongsSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SongsSearchAppBar({
     super.key,
   });
 
