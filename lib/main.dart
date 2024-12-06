@@ -31,12 +31,12 @@ Future<void> main() async{
     url: projectUrl,
     anonKey: anonKey,
   );
-  await LocalNotifications.init();
   await PushNotifications.init();
+  await LocalNotifications.init();
   FirebaseMessaging.onBackgroundMessage(PushNotifications.firebaseBackgroundMessage);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message){
-    if(message.notification != null){
-      String payloadData = jsonEncode(message.data);
+  FirebaseMessaging.onMessage.listen((RemoteMessage? message){
+    if(message?.notification != null){
+      String payloadData = jsonEncode(message!.data);
       LocalNotifications.showSimpleNotification(
           title: message.notification!.title!,
           body: message.notification!.body!,
