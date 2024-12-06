@@ -73,9 +73,9 @@ class AuthenticationRepository extends GetxController {
 
   }
 
-  Future<void> deleteAccount(String userId) async{
+  Future<void> deleteAccount() async{
     try{
-      await _authRemoteDataController.deleteAccount(userId);
+      await _authRemoteDataController.deleteAccount();
     }
     catch (e)
     {
