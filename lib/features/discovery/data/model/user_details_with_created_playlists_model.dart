@@ -5,10 +5,10 @@ class UserDetailsWithCreatedPlaylistsModel{
     required this.id,
     required this.userName,
     required this.profileImg,
-    required this.publicCreatedPlaylists,
+    this.publicCreatedPlaylists,
   });
   final String id;
   final String userName;
   final String? profileImg;
-  List<SongsCollectionModel> publicCreatedPlaylists;
+  List<SongsCollectionModel>? publicCreatedPlaylists;
 }
