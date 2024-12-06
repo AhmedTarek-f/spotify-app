@@ -83,7 +83,6 @@ class PlaylistDetailsRemoteData extends GetxController {
     try{
       await _db.collection("Users").doc(_auth.currentUser!.uid).collection("RecentlyPlayedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").update(
         {
-          "ListOfSongsIds": playlist.listOfSongsIds,
           "lastPlayedAt": DateTime.now().toIso8601String()
         },
       );
