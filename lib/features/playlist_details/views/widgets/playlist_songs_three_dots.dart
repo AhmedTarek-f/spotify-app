@@ -20,7 +20,10 @@ class PlaylistSongsThreeDots extends StatelessWidget {
         },
         child: Obx(
               ()=> (controller.isDeletingSongLoading.value && controller.deletedSongName == song.songTitle)?
-          const SizedBox(width: 16,height: 16,child: CircularProgressIndicator(color: Colors.redAccent,),)  :
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: SizedBox(width: 16,height: 16,child: CircularProgressIndicator(color: Colors.redAccent,),),
+          )  :
           const Icon(Icons.remove,color: Colors.redAccent,size: 32,),
         )
     );
