@@ -30,7 +30,7 @@ class ProfilePicture extends StatelessWidget {
                   CachedNetworkImageProvider(
                     profileController.userData.value.profileImg!,
                   ),
-                  child: profileController.isLoading.value?
+                  child: profileController.homeController.isUserDataLoading.value?
                   const ShimmerEffect(width: 92, height: 92,radius: 92,): null
 
                 ),
