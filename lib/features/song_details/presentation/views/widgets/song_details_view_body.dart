@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:spotify/features/favorites/presentation/views_model/favorites_controller.dart';
 import 'package:spotify/features/offline_songs/presentation/views_model/offline_songs_controller.dart';
 import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
-import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/open_lyrics.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/show_song_lyrics.dart';
 import 'package:spotify/features/song_details/presentation/views/widgets/song_controller_row.dart';
@@ -16,13 +15,11 @@ class SongDetailsViewBody extends StatelessWidget {
   const SongDetailsViewBody(
       {super.key,
       required this.playlistDetailsController,
-      required this.profileController,
       required this.offlineSongsController,
-      required this.favoritesController}
-      );
+      required this.favoritesController
+      });
 
   final PlaylistDetailsController? playlistDetailsController;
-  final ProfileController? profileController;
   final OfflineSongsController? offlineSongsController;
   final FavoritesController? favoritesController;
 
@@ -33,9 +30,7 @@ class SongDetailsViewBody extends StatelessWidget {
         ? playlistDetailsController!.currentSong.value.lyrics
         : offlineSongsController != null
             ? offlineSongsController!.currentSong.value.lyrics
-            : favoritesController != null
-                ? favoritesController!.currentSong.value.lyrics
-                : profileController!.currentSong.value.lyrics;
+            : favoritesController!.currentSong.value.lyrics;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.sizeOf(context).width * 0.06923),
@@ -57,12 +52,8 @@ class SongDetailsViewBody extends StatelessWidget {
                       : offlineSongsController != null
                           ? SongImageContainer(
                               offlineSongsController: offlineSongsController)
-                          : favoritesController != null
-                              ? SongImageContainer(
+                          : SongImageContainer(
                                   favoritesController: favoritesController,
-                                )
-                              : SongImageContainer(
-                                  profileController: profileController,
                                 ),
                   const SizedBox(
                     height: 17,
@@ -75,12 +66,8 @@ class SongDetailsViewBody extends StatelessWidget {
                           ? SongDetailsRow(
                               offlineSongsController: offlineSongsController,
                             )
-                          : favoritesController != null
-                              ? SongDetailsRow(
+                          : SongDetailsRow(
                                   favoritesController: favoritesController,
-                                )
-                              : SongDetailsRow(
-                                  profileController: profileController,
                                 ),
                   const SizedBox(
                     height: 32,
@@ -93,12 +80,8 @@ class SongDetailsViewBody extends StatelessWidget {
                           ? SongDurationSlider(
                               offlineSongsController: offlineSongsController,
                             )
-                          : favoritesController != null
-                              ? SongDurationSlider(
+                          :SongDurationSlider(
                                   favoritesController: favoritesController,
-                                )
-                              : SongDurationSlider(
-                                  profileController: profileController,
                                 ),
                   const SizedBox(
                     height: 42,
@@ -118,12 +101,8 @@ class SongDetailsViewBody extends StatelessWidget {
                               ? ShowSongLyrics(
                                   offlineSongsController:
                                       offlineSongsController)
-                              : favoritesController != null
-                                  ? ShowSongLyrics(
+                              :ShowSongLyrics(
                                       favoritesController: favoritesController,
-                                    )
-                                  : ShowSongLyrics(
-                                      profileController: profileController,
                                     ))
                       : const SizedBox.shrink(),
                 ),
@@ -135,12 +114,8 @@ class SongDetailsViewBody extends StatelessWidget {
               : offlineSongsController != null
                   ? SongControllersRow(
                       offlineSongsController: offlineSongsController)
-                  : favoritesController != null
-                      ? SongControllersRow(
+                  : SongControllersRow(
                           favoritesController: favoritesController,
-                        )
-                      : SongControllersRow(
-                          profileController: profileController,
                         ),
           const Expanded(child: SizedBox()),
           if (currentSongLyrics.isNotEmpty && currentSongLyrics.trim() != "")

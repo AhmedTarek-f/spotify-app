@@ -11,7 +11,7 @@ class SongDetailsController extends GetxController {
   RxBool isFavoritePublic = false.obs;
   RxBool isShowingLyrics = false.obs;
   List<SongModel> playlistSongs = Get.arguments["playlistSongs"];
-  final _songDetailsRepository = Get.put(SongDetailsRepository());
+  final _songDetailsRepository = Get.isRegistered<SongDetailsRepository>()? SongDetailsRepository.instance :Get.put(SongDetailsRepository());
   final _favoritesController = Get.isRegistered<FavoritesController>()? FavoritesController.instance :Get.put(FavoritesController());
   final _profileController = Get.isRegistered<ProfileController>()? ProfileController.instance : Get.put(ProfileController());
   final bool isOfflineMode = Get.arguments["isOffline"] ?? false;

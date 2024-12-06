@@ -7,7 +7,6 @@ import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/favorites/presentation/views_model/favorites_controller.dart';
 import 'package:spotify/features/offline_songs/presentation/views_model/offline_songs_controller.dart';
 import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
-import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 
 class SongControllersRow extends StatelessWidget {
   const SongControllersRow({
@@ -15,13 +14,11 @@ class SongControllersRow extends StatelessWidget {
     this.playlistDetailsController,
     this.offlineSongsController,
     this.favoritesController,
-    this.profileController,
   });
 
   final PlaylistDetailsController? playlistDetailsController;
   final OfflineSongsController? offlineSongsController;
   final FavoritesController? favoritesController;
-  final ProfileController? profileController;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +31,7 @@ class SongControllersRow extends StatelessWidget {
               ? await playlistDetailsController!.toggleRepeat()
               : offlineSongsController != null
                   ? await offlineSongsController!.toggleRepeat()
-                  : favoritesController != null
-                      ? await favoritesController!.toggleRepeat()
-                      : await profileController!.toggleRepeat(),
+                  : await favoritesController!.toggleRepeat(),
           child: Obx(
             () => SvgPicture.asset(
               SpotifyImages.repeatIcon,
@@ -45,9 +40,7 @@ class SongControllersRow extends StatelessWidget {
                         ? playlistDetailsController!.isRepeating.value
                         : offlineSongsController != null
                             ? offlineSongsController!.isRepeating.value
-                            : favoritesController != null
-                                ? favoritesController!.isRepeating.value
-                                : profileController!.isRepeating.value)
+                            : favoritesController!.isRepeating.value)
                     ? SpotifyColors.primaryColor
                     : (isDarkMode
                         ? const Color(0xff6D6D6D)
@@ -65,9 +58,7 @@ class SongControllersRow extends StatelessWidget {
               ? await playlistDetailsController!.playPreviousSong()
               : offlineSongsController != null
                   ? await offlineSongsController!.playPreviousSong()
-                  : favoritesController != null
-                      ? await favoritesController!.playPreviousSong()
-                      : await profileController!.playPreviousSong(),
+                  : await favoritesController!.playPreviousSong(),
           child: SvgPicture.asset(
             SpotifyImages.previousIcon,
             colorFilter: ColorFilter.mode(
@@ -84,18 +75,14 @@ class SongControllersRow extends StatelessWidget {
               ? await playlistDetailsController!.handlePlayAndPause()
               : offlineSongsController != null
                   ? await offlineSongsController!.handlePlayAndPause()
-                  : favoritesController != null
-                      ? await favoritesController!.handlePlayAndPause()
-                      : await profileController!.handlePlayAndPause(),
+                  : await favoritesController!.handlePlayAndPause(),
           icon: Obx(
             () => Icon(
               (playlistDetailsController != null
                       ? playlistDetailsController!.isPlaying.value
                       : offlineSongsController != null
                           ? offlineSongsController!.isPlaying.value
-                          : favoritesController != null
-                              ? favoritesController!.isPlaying.value
-                              : profileController!.isPlaying.value)
+                          : favoritesController!.isPlaying.value)
                   ? Icons.pause
                   : Icons.play_arrow,
               size: 28,
@@ -111,9 +98,7 @@ class SongControllersRow extends StatelessWidget {
               ? await playlistDetailsController!.playNextSong()
               : offlineSongsController != null
                   ? await offlineSongsController!.playNextSong()
-                  : favoritesController != null
-                      ? await favoritesController!.playNextSong()
-                      : await profileController!.playNextSong(),
+                  : await favoritesController!.playNextSong(),
           child: SvgPicture.asset(
             SpotifyImages.nextIcon,
             colorFilter: ColorFilter.mode(
@@ -130,9 +115,7 @@ class SongControllersRow extends StatelessWidget {
                 ? await playlistDetailsController!.toggleShuffle()
                 : offlineSongsController != null
                     ? await offlineSongsController!.toggleShuffle()
-                    : favoritesController != null
-                        ? await favoritesController!.toggleShuffle()
-                        : await profileController!.toggleShuffle();
+                    : await favoritesController!.toggleShuffle();
           },
           child: Obx(
             () => SvgPicture.asset(
@@ -142,9 +125,7 @@ class SongControllersRow extends StatelessWidget {
                           ? playlistDetailsController!.isShuffling.value
                           : offlineSongsController != null
                               ? offlineSongsController!.isShuffling.value
-                              : favoritesController != null
-                                  ? favoritesController!.isShuffling.value
-                                  : profileController!.isShuffling.value)
+                              : favoritesController!.isShuffling.value)
                       ? SpotifyColors.primaryColor
                       : (isDarkMode
                           ? const Color(0xff6D6D6D)
