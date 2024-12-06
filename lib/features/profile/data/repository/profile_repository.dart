@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/discovery/presentation/discovery_profile/data/models/following_followers_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/profile/data/data_sources/remote_data_source/profile_remote_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,6 +16,17 @@ class ProfileRepository extends GetxController {
   final _profileRemoteData = Get.put(ProfileRemoteData());
   final SupabaseClient supaBase = Supabase.instance.client;
 
+
+  Future<void> updateProfilePicture({required String newProfilePic}) async{
+    try{
+      Map<String,dynamic> json = {"ProfileImg":newProfilePic,};
+     await _profileRemoteData.updateProfilePicture(json: json);
+    }
+    catch (e){
+      throw e.toString();
+    }
+  }
+
   Future<UserModel> fetchUserDetails() async {
     try{
       return await _profileRemoteData.fetchUserDetails();
@@ -23,12 +35,14 @@ class ProfileRepository extends GetxController {
       throw e.toString();
     }
   }
-  Future<void> updateProfilePicture({required String newProfilePic}) async{
+
+  Future<FollowingFollowersModel> getFollowingFollowersData() async{
     try{
-      Map<String,dynamic> json = {"ProfileImg":newProfilePic,};
-     await _profileRemoteData.updateProfilePicture(json: json);
+      return await _profileRemoteData.getFollowingFollowersData();
     }
-    catch (e){
+
+    catch (e)
+    {
       throw e.toString();
     }
   }
