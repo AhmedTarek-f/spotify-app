@@ -19,7 +19,7 @@ class SongsCollectionModel {
    List<String>? listOfSongsIds;
 
 
-  static SongsCollectionModel empty() =>  SongsCollectionModel(id: "", collectionImg: "", collectionTitle: "");
+  static SongsCollectionModel empty() =>  SongsCollectionModel(id: "", collectionImg: "", collectionTitle: "",listOfSongsIds: [],createdBy: null,lastPlayedAt: null);
 
   Map<String,dynamic> toJson() {
     return {

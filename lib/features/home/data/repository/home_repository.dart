@@ -16,6 +16,15 @@ class HomeRepository extends GetxController {
   final _homeRemoteData = Get.put(HomeRemoteData());
   final SupabaseClient supaBase = Supabase.instance.client;
 
+  Future<UserModel> fetchUserDetails() async {
+    try{
+      return await _homeRemoteData.fetchUserDetails();
+    }
+    catch (e){
+      throw e.toString();
+    }
+  }
+
   Future<List<SongsCollectionModel>> fetchAllPlaylists() async{
     try{
      return await _homeRemoteData.fetchAllPlaylists();
@@ -97,9 +106,9 @@ class HomeRepository extends GetxController {
     }
   }
 
-  Future<void> addSongToCreatedPlaylists({required List<String>? listOfSongs, required String playlistId}) async{
+  Future<void> addSongToCreatedPlaylists({required List<String>? listOfSongs, required SongsCollectionModel playlist}) async{
     try{
-      await _homeRemoteData.addSongToCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId);
+      await _homeRemoteData.addSongToCreatedPlaylists(listOfSongs:listOfSongs,playlist: playlist);
     }
     catch (e)
     {
@@ -107,9 +116,9 @@ class HomeRepository extends GetxController {
     }
   }
 
-  Future<void> addSongToRecentlyAndCreatedPlaylists({required List<String>? listOfSongs, required String playlistId}) async{
+  Future<void> addSongToRecentlyAndCreatedPlaylists({required List<String>? listOfSongs, required SongsCollectionModel playlist}) async{
     try{
-      await _homeRemoteData.addSongToRecentlyAndCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId);
+      await _homeRemoteData.addSongToRecentlyAndCreatedPlaylists(listOfSongs:listOfSongs,playlist: playlist);
     }
     catch (e)
     {
