@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:spotify/core/common_widgets/rounded_container_image.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
@@ -13,6 +14,7 @@ import 'package:spotify/features/authentication/register/data/models/user_model.
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/data/models/songs_collection_model.dart';
 import 'package:spotify/features/home/data/repository/home_repository.dart';
+import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 
 class HomeController extends GetxController {
   static HomeController get instance => Get.find();
@@ -20,7 +22,9 @@ class HomeController extends GetxController {
   final AuthenticationRepository _authenticationRepository = AuthenticationRepository.instance;
   late final RxBool isDarkMode;
   final _deviceStorage = getIt.get<GetStorage>();
+  Rx<UserModel> userData = UserModel.empty().obs;
   final RxBool isLoading = false.obs;
+  final RxBool isUserDataLoading = false.obs;
   final RxBool isRecentlyPlayedPlaylistsLoading = false.obs;
   final RxBool isYourCreatedPlaylistsLoading = false.obs;
   final RxBool isNewAlbumsLoading = false.obs;
@@ -39,10 +43,14 @@ class HomeController extends GetxController {
   late final TextEditingController playlistTitleField;
   final ImagePicker picker = getIt.get<ImagePicker>();
   Rx<XFile?>  pickedFile = XFile("").obs;
+  RxList<SongModel> songsListPlaying = <SongModel>[].obs;
+  Rx<AudioPlayer> songPlayer = getIt.get<AudioPlayer>().obs;
+  Rx<SongModel> currentSong = SongModel.empty().obs;
 
   @override
   void onInit() {
     super.onInit();
+    getUserData();
     fetchAllNewAlbums();
     getRecentlyPlayedPlaylists();
     getYourCreatedPlaylists();
@@ -52,17 +60,25 @@ class HomeController extends GetxController {
     playlistTitleField = TextEditingController();
   }
 
+  Future<void> getUserData() async{
+    try{
+      isUserDataLoading.value = true;
+      userData.value = await _homeRepo.fetchUserDetails();
+      isUserDataLoading.value=false;
+    }
+    catch(e) {
+      isUserDataLoading.value=false;
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
   Future<void> getAllPlaylists() async {
     try {
       isLoading.value = true;
       songsPlaylists.value = await _homeRepo.fetchAllPlaylists();
       isLoading.value = false;
-      discoveryPlaylist.value =
-          songsPlaylists.firstWhere((playlist) => playlist.id == "001",
-              orElse: SongsCollectionModel.empty);
-      releaseRadarPlaylist.value =
-          songsPlaylists.firstWhere((playlist) => playlist.id == "002",
-              orElse: SongsCollectionModel.empty);
+      discoveryPlaylist.value = songsPlaylists.firstWhere((playlist) => playlist.id == "001", orElse: ()=> SongsCollectionModel.empty());
+      releaseRadarPlaylist.value = songsPlaylists.firstWhere((playlist) => playlist.id == "002", orElse: ()=> SongsCollectionModel.empty());
       songsPlaylists.remove(
           songsPlaylists.firstWhere((playlist) => playlist.id == "001"));
       songsPlaylists.remove(
@@ -71,6 +87,14 @@ class HomeController extends GetxController {
     catch (e) {
       Loaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
     }
+  }
+
+  void assignIndex(){
+    songPlayer.value.currentIndexStream.listen((index){
+      if (index != null) {
+        currentSong.value = songsListPlaying[index];
+      }
+    });
   }
 
   Future<void> getRecentlyPlayedPlaylists() async {
@@ -191,7 +215,7 @@ class HomeController extends GetxController {
             id: playlistId,
             collectionImg: collectionImgUrl,
             collectionTitle: playlistTitleField.text,
-          createdBy: FirebaseAuth.instance.currentUser?.displayName ?? "",
+          createdBy: userData.value.userName,
         );
         await _homeRepo.createPlaylists(playlist: playlist);
         yourCreatedPlaylists.add(playlist);
