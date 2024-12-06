@@ -27,7 +27,7 @@ class GetStartedViewBody extends StatelessWidget {
             Text("Enjoy Listening To Music",style: SpotifyFonts.appStylesBold25.copyWith(color: const Color(0xffDADADA)),),
             const SizedBox(height: 25,),
             Text(
-                "Lorem ipsum dolor sit amet,\n consectetur adipiscing elit. Sagittis enim\n purus sed phasellus. Cursus ornare id\n scelerisque aliquam.\n",
+              "Discover and stream your favorite tunes,\n create playlists, and explore new music.\n Your journey into endless melodies\n starts here.\n",
               style: SpotifyFonts.appStylesRegular17.copyWith(color: const Color(0xff797979),overflow: TextOverflow.visible),
               textAlign: TextAlign.center,
             ),
