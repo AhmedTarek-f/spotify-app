@@ -6,9 +6,10 @@ import 'package:path/path.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
+import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/home/presentation/home/views/widgets/playlist_name_field.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
-import 'package:spotify/features/home/presentation/home_search/views/home_search_view.dart';
+import 'package:spotify/features/home/presentation/search/playlist_search/views/playlists_search_view.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
   const HomeAppBar({super.key});
@@ -23,12 +24,17 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
         elevation: 0,
         title:  SvgPicture.asset(SpotifyImages.spotifyLogoSVG,height: MediaQuery.sizeOf(context).height*0.03909,),
         centerTitle: true,
-        leading: IconButton(onPressed: (){Get.to(()=> const HomeSearchView());}, icon: SvgPicture.asset(SpotifyImages.searchIcon,colorFilter: ColorFilter.mode(isDarkMode?const Color(0xffCFCFCF): const Color(0xff1C1B1B), BlendMode.srcIn),),iconSize: 28,),
+        leading: IconButton(onPressed: (){Get.to(()=> const PlaylistsSearchView());}, icon: SvgPicture.asset(SpotifyImages.searchIcon,colorFilter: ColorFilter.mode(isDarkMode?const Color(0xffCFCFCF): const Color(0xff1C1B1B), BlendMode.srcIn),),iconSize: 28,),
         actions: [
           IconButton(
               onPressed: (){
+                controller.isUserDataLoading.value?
+                Loaders.warningSnackBar(
+                    title: "Loading Your Data...",
+                    message: "Please wait for a few seconds and try again to create your own playlist."
+                ):
                 createPlaylistDialog(controller,context);
-              },
+                },
               icon: const Icon(Icons.playlist_add)
           ),
           IconButton(

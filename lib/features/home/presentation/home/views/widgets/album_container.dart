@@ -2,9 +2,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
+import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/features/home/data/models/new_album_model.dart';
 import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 import 'package:spotify/features/playlist_details/views/playlist_details_view.dart';
@@ -17,8 +19,11 @@ class AlbumContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = HomeController.instance;
+    final player = getIt.get<AudioPlayer>();
     return GestureDetector(
       onTap: (){
+        if(player.playing) player.stop();
+        controller.songsListPlaying.clear();
         Get.to(()=> PlaylistDetailsView(playlist: controller.songsPlaylists.firstWhere((playlist)=> playlist.id == newAlbum.playlistId)),
             arguments: {"playlist":controller.songsPlaylists.firstWhere((playlist)=> playlist.id == newAlbum.playlistId)}
         );
