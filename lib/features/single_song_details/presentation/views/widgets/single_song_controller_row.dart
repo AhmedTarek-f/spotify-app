@@ -4,10 +4,6 @@ import 'package:get/get.dart';
 import 'package:spotify/core/common_widgets/song_common_widgets/songs_play_icon.dart';
 import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
-import 'package:spotify/features/favorites/presentation/views_model/favorites_controller.dart';
-import 'package:spotify/features/offline_songs/presentation/views_model/offline_songs_controller.dart';
-import 'package:spotify/features/playlist_details/views_model/playlist_details_controller.dart';
-import 'package:spotify/features/profile/presentation/views_model/profile_controller.dart';
 import 'package:spotify/features/single_song_details/presentation/views_model/single_song_details_controller.dart';
 
 class SingleSongControllerRow extends StatelessWidget {

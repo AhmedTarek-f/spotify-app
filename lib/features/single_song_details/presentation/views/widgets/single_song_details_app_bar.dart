@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spotify/core/common_widgets/back_arrow.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/features/single_song_details/presentation/views/widgets/single_song_add_and_remove_from_fav_public.dart';
-import 'package:spotify/features/song_details/presentation/views/widgets/add_and_remove_from_fav_public.dart';
 
 class SingleSongDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SingleSongDetailsAppBar({

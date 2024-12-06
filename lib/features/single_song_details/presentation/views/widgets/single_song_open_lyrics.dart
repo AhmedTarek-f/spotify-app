@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:spotify/core/constants/spotify_fonts.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/features/single_song_details/presentation/views_model/single_song_details_controller.dart';
-import 'package:spotify/features/song_details/presentation/views_model/song_details_controller.dart';
 
 class SingleSongOpenLyrics extends StatelessWidget {
   const SingleSongOpenLyrics({
