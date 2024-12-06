@@ -15,7 +15,35 @@ class HomeRemoteData extends GetxController {
   static HomeRemoteData get instance => Get.find();
   final _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  
+
+  Future<UserModel> fetchUserDetails() async{
+    try{
+      final documentSnapshot = await _db.collection("Users").doc(_auth.currentUser!.uid).get();
+      if(documentSnapshot.exists)
+      {
+        return UserModel.fromSnapshot(documentSnapshot);
+      }
+      else{
+        return UserModel.empty();
+      }
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong, Please try again";
+    }
+  }
+
+
   Future<List<SongsCollectionModel>> fetchAllPlaylists() async{
     try{
       final snapshot = await _db.collection("Playlists").get();
@@ -192,10 +220,10 @@ class HomeRemoteData extends GetxController {
     }
   }
 
-  Future<void> addSongToCreatedPlaylists({required List<String>? listOfSongs, required String playlistId}) async{
+  Future<void> addSongToCreatedPlaylists({required List<String>? listOfSongs, required SongsCollectionModel playlist}) async{
     try{
       final jsonListOfSongs = {"ListOfSongsIds":listOfSongs};
-      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("CreatedPlaylists").doc(playlistId).update(jsonListOfSongs);
+      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("CreatedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").update(jsonListOfSongs);
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -212,11 +240,11 @@ class HomeRemoteData extends GetxController {
       throw "Something went wrong: ${e.toString()}";
     }
   }
-  Future<void> addSongToRecentlyAndCreatedPlaylists({required List<String>? listOfSongs, required String playlistId}) async{
+  Future<void> addSongToRecentlyAndCreatedPlaylists({required List<String>? listOfSongs, required SongsCollectionModel playlist}) async{
     try{
       final jsonListOfSongs = {"ListOfSongsIds":listOfSongs};
-      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("CreatedPlaylists").doc(playlistId).update(jsonListOfSongs);
-      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("RecentlyPlayedPlaylists").doc(playlistId).update(jsonListOfSongs);
+      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("CreatedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").update(jsonListOfSongs);
+      await _db.collection("Users").doc(_auth.currentUser?.uid).collection("RecentlyPlayedPlaylists").doc("${playlist.collectionTitle}_${playlist.id}").update(jsonListOfSongs);
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
