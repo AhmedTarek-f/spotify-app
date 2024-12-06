@@ -12,15 +12,13 @@ class SongsSearchController extends GetxController
   static SongsSearchController get instance => Get.find();
 
   late final TextEditingController songsSearchField;
-  late final TextEditingController playlistsSearchField;
   final _homeRepo = HomeRepository.instance;
   final _homeController = HomeController.instance;
   final RxBool isSongsLoading = false.obs;
+  final RxBool isFetchingPlaylistsLoading = false.obs;
   final RxBool isAddingSongLoading = false.obs;
   RxList<SongModel> allSongsList = <SongModel>[].obs;
   RxList<SongModel> songsSearchList = <SongModel>[].obs;
-  RxList<SongsCollectionModel> allPlaylists = <SongsCollectionModel>[].obs;
-  RxList<SongsCollectionModel> playlistsSearchList = <SongsCollectionModel>[].obs;
   final RxInt activeSelectedSong = 0.obs;
 
 
@@ -28,9 +26,7 @@ class SongsSearchController extends GetxController
   void onInit() {
     super.onInit();
     songsSearchField = TextEditingController();
-    playlistsSearchField = TextEditingController();
     fetchSongs();
-    assignAllPlaylists();
   }
 
   Future<void> fetchSongs() async {
@@ -45,9 +41,6 @@ class SongsSearchController extends GetxController
     }
   }
 
-  void assignAllPlaylists(){
-    allPlaylists.assignAll(_homeController.songsPlaylists);
-  }
 
   void searchForASong({required String songName}){
     songsSearchField.text = songName;
@@ -60,20 +53,9 @@ class SongsSearchController extends GetxController
     }
   }
 
-  void searchForAPlaylist({required String playlistName}){
-    playlistsSearchField.text = playlistName;
-    if(allPlaylists.isNotEmpty){
-      for(int i=0 ; i<allPlaylists.length;i++){
-        if(allPlaylists[i].collectionTitle.toLowerCase().contains(playlistsSearchField.text.toLowerCase())){
-          playlistsSearchList.add(allPlaylists[i]);
-        }
-      }
-    }
-  }
-
   Future<void> addSongToCreatedPlaylists({required SongModel song,}) async{
     try{
-      final SongsCollectionModel targetedPlaylist = allCreatedPlaylists().elementAt(activeSelectedSong.value);
+      final SongsCollectionModel targetedPlaylist = _homeController.yourCreatedPlaylists.elementAt(activeSelectedSong.value);
       if((targetedPlaylist.listOfSongsIds?.any((songIds) => songIds==song.songId))?? false){
         Loaders.warningSnackBar(title: "Note!", message: "You have already added ${song.songTitle} before to ${targetedPlaylist.collectionTitle} playlist.");
         return;
@@ -82,18 +64,14 @@ class SongsSearchController extends GetxController
         if(Get.isRegistered<PlaylistDetailsController>()){
          if(PlaylistDetailsController.instance.playlist.collectionTitle == targetedPlaylist.collectionTitle && PlaylistDetailsController.instance.playlist.collectionImg == targetedPlaylist.collectionImg)  PlaylistDetailsController.instance.playlistSongs.add(song);
         }
-        final String playlistId = "${targetedPlaylist.collectionTitle}_${targetedPlaylist.id}";
         if(_homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds == null) _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds = [];
         _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds?.add(song.songId);
-        final listOfSongs = _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!;
+        List<String> listOfSongs = _homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!;
         isAddingSongLoading.value = true;
         if(_homeController.recentlyPlayedPlaylists.any((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg))){
           _homeController.recentlyPlayedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds = [];
           _homeController.recentlyPlayedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds?.assignAll(_homeController.yourCreatedPlaylists.firstWhere((playlist) => (playlist.collectionTitle == targetedPlaylist.collectionTitle) && (playlist.collectionImg == targetedPlaylist.collectionImg)).listOfSongsIds!);
-          await _homeRepo.addSongToRecentlyAndCreatedPlaylists(listOfSongs: listOfSongs, playlistId: playlistId);
-        }
-        else{
-          await _homeRepo.addSongToCreatedPlaylists(listOfSongs:listOfSongs,playlistId: playlistId);
+          await _homeRepo.addSongToRecentlyAndCreatedPlaylists(listOfSongs: listOfSongs, playlist: targetedPlaylist);
         }
         isAddingSongLoading.value = false;
         Get.back();
@@ -106,15 +84,16 @@ class SongsSearchController extends GetxController
     }
   }
 
-  List<SongsCollectionModel> allCreatedPlaylists(){
-    return _homeController.yourCreatedPlaylists;
+  Future<void> fetchAllCreatedPlaylists() async{
+    isFetchingPlaylistsLoading.value=true;
+    await _homeController.getYourCreatedPlaylists();
+    isFetchingPlaylistsLoading.value = false;
   }
 
 
   @override
   void onClose() {
     songsSearchField.dispose();
-    playlistsSearchField.dispose();
     super.onClose();
   }
 }
