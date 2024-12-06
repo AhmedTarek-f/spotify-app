@@ -6,6 +6,7 @@ import 'package:spotify/core/utlis/exceptions/t_firebase_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_format_exceptions.dart';
 import 'package:spotify/core/utlis/exceptions/t_platform_exceptions.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/discovery/presentation/discovery_profile/data/models/following_followers_model.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/song_details/data/models/song_id_model.dart';
 
@@ -13,6 +14,26 @@ class ProfileRemoteData extends GetxController {
   static ProfileRemoteData get instance => Get.find();
   final _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+
+  Future<void> updateProfilePicture({required Map<String,dynamic> json}) async {
+    try{
+      await _db.collection("Users").doc(_auth.currentUser!.uid).update(json);
+    }
+    on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    }
+    on FormatException catch (_){
+      throw const TFormatException();
+    }
+    on PlatformException catch(e)
+    {
+      throw TPlatformException(e.code).message;
+    }
+    catch (e)
+    {
+      throw "Something went wrong, Please try again";
+    }
+  }
 
   Future<UserModel> fetchUserDetails() async{
     try{
@@ -41,9 +62,11 @@ class ProfileRemoteData extends GetxController {
     }
   }
 
-  Future<void> updateProfilePicture({required Map<String,dynamic> json}) async {
+  Future<FollowingFollowersModel> getFollowingFollowersData() async{
     try{
-      await _db.collection("Users").doc(_auth.currentUser!.uid).update(json);
+      final userDataSnapshot = await _db.collection("Users").doc(_auth.currentUser?.uid).get();
+      final userData = UserModel.fromSnapshot(userDataSnapshot);
+      return FollowingFollowersModel(following: userData.following ?? 0,followers: userData.followers??0);
     }
     on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
@@ -57,27 +80,7 @@ class ProfileRemoteData extends GetxController {
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
-    }
-  }
-
-  Future<void> updateFollowers({required Map<String,dynamic> json})async{
-    try{
-      await _db.collection("Users").doc(_auth.currentUser!.uid).update(json);
-    }
-    on FirebaseException catch (e){
-      throw TFirebaseException(e.code).message;
-    }
-    on FormatException catch (_){
-      throw const TFormatException();
-    }
-    on PlatformException catch(e)
-    {
-      throw TPlatformException(e.code).message;
-    }
-    catch (e)
-    {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong:${e.toString()}";
     }
   }
   
