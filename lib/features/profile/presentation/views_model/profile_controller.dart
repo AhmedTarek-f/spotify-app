@@ -8,20 +8,25 @@ import 'package:spotify/core/constants/spotify_images.dart';
 import 'package:spotify/core/utlis/functions/setup_service_locator.dart';
 import 'package:spotify/core/utlis/loaders/loaders.dart';
 import 'package:spotify/features/authentication/register/data/models/user_model.dart';
+import 'package:spotify/features/discovery/presentation/discovery_profile/data/models/following_followers_model.dart';
+import 'package:spotify/features/home/presentation/home/views_model/home_controller.dart';
 import 'package:spotify/features/playlist_details/data/models/song_model.dart';
 import 'package:spotify/features/profile/data/repository/profile_repository.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
   final ProfileRepository _profileRepository = Get.put(ProfileRepository());
-
-  final RxBool isLoading = false.obs;
+  final homeController = HomeController.instance;
   final RxBool isPickingImageLoading = false.obs;
   final RxBool isUploadingImage = false.obs;
+  final RxBool isLoading = false.obs;
+  final RxBool isFollowingFollowersLoading = false.obs;
   Rx<UserModel> userData = UserModel.empty().obs;
   RxList<SongModel> publicSongsList = <SongModel>[].obs;
   final RxBool isPublicSongsLoading = false.obs;
   final ImagePicker picker = getIt.get<ImagePicker>();
+  Rx<FollowingFollowersModel> followingFollowersData  = FollowingFollowersModel.empty().obs;
+
 
   @override
   void onInit() {
@@ -29,6 +34,7 @@ class ProfileController extends GetxController {
     getUserData();
     fetchAllPublicSongs();
   }
+
   Future<void> getUserData() async{
     try{
       isLoading.value = true;
@@ -37,6 +43,20 @@ class ProfileController extends GetxController {
     }
     catch(e) {
       isLoading.value=false;
+      Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
+    }
+  }
+
+  Future<void> getFollowingFollowersData() async{
+    try{
+      isFollowingFollowersLoading.value = true;
+      followingFollowersData.value = await _profileRepository.getFollowingFollowersData();
+      userData.value.following = followingFollowersData.value.following;
+      userData.value.followers = followingFollowersData.value.followers;
+      isFollowingFollowersLoading.value=false;
+    }
+    catch(e) {
+      isFollowingFollowersLoading.value=false;
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
   }
@@ -108,13 +128,22 @@ class ProfileController extends GetxController {
     try{
       isPublicSongsLoading.value = true;
       final allPublicSongs = await _profileRepository.fetchAllPublicSongs();
-      publicSongsList.assignAll(allPublicSongs);
+      if(allPublicSongs.isNotEmpty){
+        publicSongsList.assignAll(allPublicSongs);
+      }
       isPublicSongsLoading.value = false;
     }
     catch (e)
     {
       Loaders.errorSnackBar(title: "Oh Snap!",message: e.toString());
     }
+  }
+
+  Future<void> fetchFollowingList() async {
+    await homeController.fetchFollowingList();
+  }
+  Future<void> fetchFollowersList() async {
+    await homeController.fetchFollowersList();
   }
 
   Future<void> deleteFromYourPublicFavoriteSongs({required String songId}) async {
