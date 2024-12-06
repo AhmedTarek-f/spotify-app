@@ -30,7 +30,7 @@ static final _auth = FirebaseAuth.instance;
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
     }
   }
 
@@ -55,7 +55,7 @@ static final _auth = FirebaseAuth.instance;
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
     }
 
   }
@@ -81,7 +81,7 @@ static final _auth = FirebaseAuth.instance;
     }
     catch (e)
     {
-      throw "Something went wrong, Please try again";
+      throw "Something went wrong: ${e.toString()}";
     }
   }
 }
