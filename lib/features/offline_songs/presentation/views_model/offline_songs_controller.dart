@@ -19,6 +19,7 @@ class OfflineSongsController extends GetxController {
   Rx<Duration> duration = Duration.zero.obs;
   Rx<SongModel> currentSong = SongModel.empty().obs;
 
+
   @override
   void onInit() async{
     await _openHiveSongsBox();
@@ -151,6 +152,7 @@ class OfflineSongsController extends GetxController {
       await fetchAllSongsOneByOne(songIndex: 0);
     }
   }
+
 
   @override
   void onClose() async{
