@@ -39,7 +39,6 @@ class SignInViewBody extends StatelessWidget {
             googleOnPressed: ()async {
               await controller.googleSignIn(context: context);
             },
-            appleOnPressed: (){},
           ),
           const SizedBox(height: 57,),
           TwoTextOneClickable(

@@ -39,7 +39,6 @@ class RegisterViewBody extends StatelessWidget {
             googleOnPressed: ()async{
               await registerController.signUpWithGoogle(context: context);
             },
-            appleOnPressed: (){},
           ),
           const SizedBox(height: 44,),
           TwoTextOneClickable(
