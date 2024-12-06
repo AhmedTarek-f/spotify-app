@@ -18,6 +18,7 @@ class DiscoveryPublicSongsListView extends StatelessWidget {
             playlistSongs: controller.publicSongsList,
             index: index,
             isOffline: false,
+            isSingleSong: true,
           ),
           separatorBuilder: (_, __) => const SizedBox(height: 12,),
           itemCount: controller.publicSongsList.length
