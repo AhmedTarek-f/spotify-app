@@ -4,9 +4,8 @@ import 'package:spotify/core/constants/spotify_colors.dart';
 import 'package:spotify/core/constants/spotify_images.dart';
 
 class SocialButtons extends StatelessWidget {
-  const SocialButtons({super.key, this.googleOnPressed, this.appleOnPressed});
+  const SocialButtons({super.key, this.googleOnPressed});
   final Function()? googleOnPressed;
-  final Function()? appleOnPressed;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -18,14 +17,6 @@ class SocialButtons extends StatelessWidget {
           highlightColor: SpotifyColors.primaryColor.withOpacity(0.3),
           borderRadius: BorderRadius.circular(20),
           child: SvgPicture.asset(SpotifyImages.googleIcon),
-        ),
-        const SizedBox(width: 58.28,),
-        InkWell(
-          onTap: appleOnPressed,
-          splashColor: SpotifyColors.primaryColor.withOpacity(0.4),
-          highlightColor: SpotifyColors.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(100),
-          child: SvgPicture.asset(SpotifyImages.appleIcon),
         ),
       ],
     );
