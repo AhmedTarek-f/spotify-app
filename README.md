@@ -67,4 +67,4 @@ Spotify is a dynamic music streaming application built using Flutter, offering f
 
 Get the Spotify app on your device:
 
-- [Download for Android](https://drive.google.com/file/d/1hdiOlKFa-NXlSMtFQOx4b3QxLEQ_wlid/view?usp=sharing)
+- [Download for Android](https://drive.google.com/file/d/1jKjnitXlDqX-NU5jnamKPh8To1wHZrtY/view?usp=sharing)
